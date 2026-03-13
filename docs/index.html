@@ -4,8 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bolt Hole — Weekly Shortlist</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://rimh2.domainstatic.com.au https://*.basemaps.cartocdn.com data:; connect-src 'self'; frame-src 'none'; base-uri 'none'; form-action 'none';">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -29,7 +31,7 @@
         }
 
         .container {
-            max-width: 640px;
+            max-width: 720px;
             margin: 0 auto;
             padding: 24px 16px 80px; /* extra bottom for progress bar */
         }
@@ -252,15 +254,24 @@
             .card { animation: none; opacity: 1; transform: none; }
             .map-pin.pulse { animation: none; }
         }
+
+        /* ── Stale listing banner ──────────────── */
+        .stale-banner {
+            background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 600;
+            text-align: center; padding: 6px 12px; letter-spacing: 0.5px;
+            border-bottom: 1px solid #fde68a;
+        }
+        .card.stale { opacity: 0.6; }
+        .card.stale:hover { opacity: 0.85; }
     </style>
 </head>
 <body>
     <nav style="position:sticky;top:0;z-index:9999;background:rgba(245,240,232,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-      <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;">
-        <a href="../bolt-hole-overview.html" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:500;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;min-height:48px;">Overview</a>
-        <a href="../dashboard.html" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:500;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;min-height:48px;">Market Map</a>
-        <a href="../docs/index.html" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:600;color:#4A7C6B;text-decoration:none;white-space:nowrap;border-bottom:2px solid #4A7C6B;min-height:48px;">Shortlist</a>
-        <a href="../system-map.html" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:500;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;min-height:48px;">How It Works</a>
+      <div style="max-width:720px;margin:0 auto;padding:0 16px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;">
+        <a href="/bolt-hole/bolt-hole-overview.html" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:500;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;min-height:48px;">Overview</a>
+        <a href="/bolt-hole/dashboard.html" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:500;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;min-height:48px;">Market Map</a>
+        <a href="/bolt-hole/" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:600;color:#4A7C6B;text-decoration:none;white-space:nowrap;border-bottom:2px solid #4A7C6B;min-height:48px;">Shortlist</a>
+        <a href="/bolt-hole/system-map.html" style="display:inline-flex;align-items:center;padding:14px 12px;font-size:13px;font-weight:500;color:#64748b;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;min-height:48px;">How It Works</a>
       </div>
     </nav>
     <div class="container">
@@ -283,7 +294,7 @@
 
         
         <div class="card" id="card-0" data-idx="0" data-property-id="2020363906">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/tXBJ5FhYJaD8u5RXbUI5X3nvwzY=/660x440/filters:format(jpeg):quality(80)/2017765079_11_1_220428_023939-w4002-h3000" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/tXBJ5FhYJaD8u5RXbUI5X3nvwzY=/660x440/filters:format(jpeg):quality(80)/2017765079_11_1_220428_023939-w4002-h3000" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -354,7 +365,7 @@
         </div>
 
         <div class="card" id="card-1" data-idx="1" data-property-id="2020441371">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6lvhg7r76IsWhlwtuVlQ0bHwpME=/660x440/filters:format(jpeg):quality(80)/2020441371_1_1_251120_103655-w1600-h1067" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6lvhg7r76IsWhlwtuVlQ0bHwpME=/660x440/filters:format(jpeg):quality(80)/2020441371_1_1_251120_103655-w1600-h1067" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -425,7 +436,7 @@
         </div>
 
         <div class="card" id="card-2" data-idx="2" data-property-id="2020274325">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/t4d6sfpA2pyKVP2--9lq7TnqEfY=/660x440/filters:format(jpeg):quality(80)/2020274325_1_1_250916_114925-w1200-h900" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/t4d6sfpA2pyKVP2--9lq7TnqEfY=/660x440/filters:format(jpeg):quality(80)/2020274325_1_1_250916_114925-w1200-h900" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -500,7 +511,7 @@ What You&#x27;ll Love
         </div>
 
         <div class="card" id="card-3" data-idx="3" data-property-id="2020317550">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/eiQfpunLrZ20YgJl7HNernNd0hM=/660x440/filters:format(jpeg):quality(80)/2020317550_1_1_251003_053751-w3000-h2247" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/eiQfpunLrZ20YgJl7HNernNd0hM=/660x440/filters:format(jpeg):quality(80)/2020317550_1_1_251003_053751-w3000-h2247" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -572,7 +583,7 @@ The mainstay, is a charming 3-bedroom country-style farmhouse awaitig you, reple
         </div>
 
         <div class="card" id="card-4" data-idx="4" data-property-id="2020421794">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ARGAPlp9s9g9VDnUJV3yc0jHJOg=/660x440/filters:format(jpeg):quality(80)/2020421794_1_1_251113_044730-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ARGAPlp9s9g9VDnUJV3yc0jHJOg=/660x440/filters:format(jpeg):quality(80)/2020421794_1_1_251113_044730-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -644,7 +655,7 @@ This comfortable two bedroom home is ideal as a weekend retreat or permanent res
         </div>
 
         <div class="card" id="card-5" data-idx="5" data-property-id="2017877723">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/JMyYkjrA4RaLV2DzdNJTgUXQwhg=/660x440/filters:format(jpeg):quality(80)/2017877723_2_1_220912_122311-w1024-h767" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/JMyYkjrA4RaLV2DzdNJTgUXQwhg=/660x440/filters:format(jpeg):quality(80)/2017877723_2_1_220912_122311-w1024-h767" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -717,7 +728,7 @@ Whether you&#x27;re dreaming o...</div>
         </div>
 
         <div class="card" id="card-6" data-idx="6" data-property-id="2020418267">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/pPcGX9gjSDvJ21DSol7SywEuJ_Y=/660x440/filters:format(jpeg):quality(80)/2020418267_1_1_251112_070156-w2048-h1365" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/pPcGX9gjSDvJ21DSol7SywEuJ_Y=/660x440/filters:format(jpeg):quality(80)/2020418267_1_1_251112_070156-w2048-h1365" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -790,7 +801,7 @@ The 180 sqm, 6 car garage and workshop as attached carport offers plenty of stor
         </div>
 
         <div class="card" id="card-7" data-idx="7" data-property-id="2020298974">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/he0NAWsyrujX2_0k-qaEW0O7LUs=/660x440/filters:format(jpeg):quality(80)/2020298974_1_1_250926_022602-w2000-h1500" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/he0NAWsyrujX2_0k-qaEW0O7LUs=/660x440/filters:format(jpeg):quality(80)/2020298974_1_1_250926_022602-w2000-h1500" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -862,7 +873,7 @@ The cedar-clad residence, built approximately 35 yea...</div>
         </div>
 
         <div class="card" id="card-8" data-idx="8" data-property-id="2020454098">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/sAwgOvPXNt_cTi-L-l-lJYjkGw8=/660x440/filters:format(jpeg):quality(80)/2020454098_1_1_251127_015155-w2000-h1500" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/sAwgOvPXNt_cTi-L-l-lJYjkGw8=/660x440/filters:format(jpeg):quality(80)/2020454098_1_1_251127_015155-w2000-h1500" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -935,7 +946,7 @@ Designed to celebrate its surroundings, the sprawling residence featur...</div>
         </div>
 
         <div class="card" id="card-9" data-idx="9" data-property-id="2020365489">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PO8nB6WB98u4qzci7ZMmewSyJPw=/660x440/filters:format(jpeg):quality(80)/2020365489_1_1_251022_110504-w2000-h1503" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PO8nB6WB98u4qzci7ZMmewSyJPw=/660x440/filters:format(jpeg):quality(80)/2020365489_1_1_251022_110504-w2000-h1503" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1006,7 +1017,7 @@ Designed to celebrate its surroundings, the sprawling residence featur...</div>
         </div>
 
         <div class="card" id="card-10" data-idx="10" data-property-id="2019785596">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/P6x8kk4cEvXJJiyfJdJeapAEgjQ=/660x440/filters:format(jpeg):quality(80)/2019785596_1_1_250211_052744-w5472-h3648" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/P6x8kk4cEvXJJiyfJdJeapAEgjQ=/660x440/filters:format(jpeg):quality(80)/2019785596_1_1_250211_052744-w5472-h3648" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1080,7 +1091,7 @@ Grazing Land:
         </div>
 
         <div class="card" id="card-11" data-idx="11" data-property-id="2020481588">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/c0Yi3Jb66PwFe2Z5qwJAORMho5A=/660x440/filters:format(jpeg):quality(80)/2020481588_1_1_251210_103404-w1200-h800" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/c0Yi3Jb66PwFe2Z5qwJAORMho5A=/660x440/filters:format(jpeg):quality(80)/2020481588_1_1_251210_103404-w1200-h800" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1159,7 +1170,7 @@ Property Highlights:
         </div>
 
         <div class="card" id="card-12" data-idx="12" data-property-id="2019935090">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/eO550Dn3q957LHWExZRKgZkt-n8=/660x440/filters:format(jpeg):quality(80)/2019935090_1_1_250416_050751-w2000-h1498" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/eO550Dn3q957LHWExZRKgZkt-n8=/660x440/filters:format(jpeg):quality(80)/2019935090_1_1_250416_050751-w2000-h1498" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1230,7 +1241,7 @@ Property Highlights:
         </div>
 
         <div class="card" id="card-13" data-idx="13" data-property-id="2019783254">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/KdN0xaGefOMrS6iVp64AkVz-7EM=/660x440/filters:format(jpeg):quality(80)/2019783254_1_1_250210_070858-w1620-h1080" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/KdN0xaGefOMrS6iVp64AkVz-7EM=/660x440/filters:format(jpeg):quality(80)/2019783254_1_1_250210_070858-w1620-h1080" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1302,7 +1313,7 @@ Mountain biking, bushwalking, four wheel driving, birdwatching all at your doors
         </div>
 
         <div class="card" id="card-14" data-idx="14" data-property-id="2019517226">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0XPzaxWRt3sR_sZjn1XR9N-3SqE=/660x440/filters:format(jpeg):quality(80)/2019517226_1_1_240925_051049-w4134-h2756" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0XPzaxWRt3sR_sZjn1XR9N-3SqE=/660x440/filters:format(jpeg):quality(80)/2019517226_1_1_240925_051049-w4134-h2756" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1374,7 +1385,7 @@ Immerse yourself in a rich blend of historical charm, Australian country and luc
         </div>
 
         <div class="card" id="card-15" data-idx="15" data-property-id="2019593640">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PAmKWdEbXwA0VFjQ_dEPfs5T1SA=/660x440/filters:format(jpeg):quality(80)/2019593640_1_1_241028_034515-w4893-h3070" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PAmKWdEbXwA0VFjQ_dEPfs5T1SA=/660x440/filters:format(jpeg):quality(80)/2019593640_1_1_241028_034515-w4893-h3070" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1447,7 +1458,7 @@ Nestled in the serene landscapes of Sodwalls, Brindabella offers an idyllic retr
         </div>
 
         <div class="card" id="card-16" data-idx="16" data-property-id="2020015110">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/-QPTdCd2H-OzchC0ptzJHQ9KZhE=/660x440/filters:format(jpeg):quality(80)/2020015110_10_1_250523_053352-w1112-h673" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/-QPTdCd2H-OzchC0ptzJHQ9KZhE=/660x440/filters:format(jpeg):quality(80)/2020015110_10_1_250523_053352-w1112-h673" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1521,7 +1532,7 @@ An absolutely ide...</div>
         </div>
 
         <div class="card" id="card-17" data-idx="17" data-property-id="2020533943">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/cxvH-cEZ3UypoY0sI5rKwvALzcs=/660x440/filters:format(jpeg):quality(80)/2020533943_1_1_260116_054003-w2048-h1534" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/cxvH-cEZ3UypoY0sI5rKwvALzcs=/660x440/filters:format(jpeg):quality(80)/2020533943_1_1_260116_054003-w2048-h1534" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1592,7 +1603,7 @@ An absolutely ide...</div>
         </div>
 
         <div class="card" id="card-18" data-idx="18" data-property-id="2020610553">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/WVdF0JGfGSnEBgeScTPtjb4HlAY=/660x440/filters:format(jpeg):quality(80)/2020610095_1_1_260216_093523-w5272-h2962" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/WVdF0JGfGSnEBgeScTPtjb4HlAY=/660x440/filters:format(jpeg):quality(80)/2020610095_1_1_260216_093523-w5272-h2962" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1664,7 +1675,7 @@ A permanent...</div>
         </div>
 
         <div class="card" id="card-19" data-idx="19" data-property-id="2020498929">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/lsq-5rV7cdA927w9AEqmgfY5Evs=/660x440/filters:format(jpeg):quality(80)/2020498929_15_1_251223_125919-w1200-h899" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/lsq-5rV7cdA927w9AEqmgfY5Evs=/660x440/filters:format(jpeg):quality(80)/2020498929_15_1_251223_125919-w1200-h899" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1738,7 +1749,7 @@ Council has already determined an approved building site, taking in attractiv...
         </div>
 
         <div class="card" id="card-20" data-idx="20" data-property-id="2018417701">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6Y4v70EUdnaOMnJG7Mi8fwZ92Rc=/660x440/filters:format(jpeg):quality(80)/2018417701_5_1_230316_100536-w1200-h900" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6Y4v70EUdnaOMnJG7Mi8fwZ92Rc=/660x440/filters:format(jpeg):quality(80)/2018417701_5_1_230316_100536-w1200-h900" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1811,7 +1822,7 @@ The property offers a large 15.5m x...</div>
         </div>
 
         <div class="card" id="card-21" data-idx="21" data-property-id="2020321837">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/pIGd1_eX1xQMoEMD97GW2ijGPkk=/660x440/filters:format(jpeg):quality(80)/2020321837_1_1_251007_122805-w2048-h1535" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/pIGd1_eX1xQMoEMD97GW2ijGPkk=/660x440/filters:format(jpeg):quality(80)/2020321837_1_1_251007_122805-w2048-h1535" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1885,7 +1896,7 @@ Key Features:
         </div>
 
         <div class="card" id="card-22" data-idx="22" data-property-id="2020099196">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/RqFhwGrGU-kBOjRvciQhIZvK0D0=/660x440/filters:format(jpeg):quality(80)/2020099196_2_1_250701_020057-w3000-h2247" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/RqFhwGrGU-kBOjRvciQhIZvK0D0=/660x440/filters:format(jpeg):quality(80)/2020099196_2_1_250701_020057-w3000-h2247" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -1957,7 +1968,7 @@ Set on 40.5ha (approx. 100 acres ), the home is thoughtfully positioned to captu
         </div>
 
         <div class="card" id="card-23" data-idx="23" data-property-id="2020345948">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/HtD9qU2TBkEkWvHsSR8QmdN48UQ=/660x440/filters:format(jpeg):quality(80)/2020345948_1_1_251015_050201-w1600-h1067" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/HtD9qU2TBkEkWvHsSR8QmdN48UQ=/660x440/filters:format(jpeg):quality(80)/2020345948_1_1_251015_050201-w1600-h1067" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2030,7 +2041,7 @@ This timeless 1940s homestead exudes warmth and character, gorgeous, pressed pla
         </div>
 
         <div class="card" id="card-24" data-idx="24" data-property-id="2020651165">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Mle8OF1TaRIBfTHMreRJAoGTHkw=/660x440/filters:format(jpeg):quality(80)/2020651165_1_1_260303_081524-w6016-h4016" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Mle8OF1TaRIBfTHMreRJAoGTHkw=/660x440/filters:format(jpeg):quality(80)/2020651165_1_1_260303_081524-w6016-h4016" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2101,7 +2112,7 @@ This timeless 1940s homestead exudes warmth and character, gorgeous, pressed pla
         </div>
 
         <div class="card" id="card-25" data-idx="25" data-property-id="2020563540">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/zMNcsCxu42UzUbxfNV8uKQcoCf4=/660x440/filters:format(jpeg):quality(80)/2020563540_1_1_260304_054718-w5280-h3956" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/zMNcsCxu42UzUbxfNV8uKQcoCf4=/660x440/filters:format(jpeg):quality(80)/2020563540_1_1_260304_054718-w5280-h3956" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2173,7 +2184,7 @@ The property boasts the ideal balance between location and privacy. It is just 1
         </div>
 
         <div class="card" id="card-26" data-idx="26" data-property-id="2020617077">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/p5Wt1yRCMZ5gk3HdOXASGx11LGY=/660x440/filters:format(jpeg):quality(80)/2020617077_1_1_260218_080921-w5280-h3956" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/p5Wt1yRCMZ5gk3HdOXASGx11LGY=/660x440/filters:format(jpeg):quality(80)/2020617077_1_1_260218_080921-w5280-h3956" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2247,7 +2258,7 @@ The property is defined by its s...</div>
         </div>
 
         <div class="card" id="card-27" data-idx="27" data-property-id="2020324943">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/wUaJ7D0O1Dt6JAITyyeooO4wsok=/660x440/filters:format(jpeg):quality(80)/2020324943_1_1_251007_105123-w4743-h3162" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/wUaJ7D0O1Dt6JAITyyeooO4wsok=/660x440/filters:format(jpeg):quality(80)/2020324943_1_1_251007_105123-w4743-h3162" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2318,7 +2329,7 @@ The property is defined by its s...</div>
         </div>
 
         <div class="card" id="card-28" data-idx="28" data-property-id="2020204709">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/EaLjae3Iavt0xSyjV7qH-oSSwjQ=/660x440/filters:format(jpeg):quality(80)/2020204709_1_1_250818_061203-w7200-h5184" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/EaLjae3Iavt0xSyjV7qH-oSSwjQ=/660x440/filters:format(jpeg):quality(80)/2020204709_1_1_250818_061203-w7200-h5184" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2390,7 +2401,7 @@ Escape to your own piece of heaven, a breathtaking 58-acre property (22.19ha) wi
         </div>
 
         <div class="card" id="card-29" data-idx="29" data-property-id="2020394897">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/auPSSE2cmkxP04L1l6SzyJiLZwg=/660x440/filters:format(jpeg):quality(80)/2020394897_2_1_251104_022526-w2000-h1333" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/auPSSE2cmkxP04L1l6SzyJiLZwg=/660x440/filters:format(jpeg):quality(80)/2020394897_2_1_251104_022526-w2000-h1333" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2461,7 +2472,7 @@ Escape to your own piece of heaven, a breathtaking 58-acre property (22.19ha) wi
         </div>
 
         <div class="card" id="card-30" data-idx="30" data-property-id="2019682398">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/BSi5mCL81XcFjBO3DIrksb9PNZ0=/660x440/filters:format(jpeg):quality(80)/2019682398_2_1_241209_012829-w5272-h2962" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/BSi5mCL81XcFjBO3DIrksb9PNZ0=/660x440/filters:format(jpeg):quality(80)/2019682398_2_1_241209_012829-w5272-h2962" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2539,7 +2550,7 @@ Land &amp; Location:
         </div>
 
         <div class="card" id="card-31" data-idx="31" data-property-id="2020292385">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/va5K5052hFZAQEHtKhlC_oiZwT0=/660x440/filters:format(jpeg):quality(80)/2019058869_20_1_240216_043259-w2000-h1114" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/va5K5052hFZAQEHtKhlC_oiZwT0=/660x440/filters:format(jpeg):quality(80)/2019058869_20_1_240216_043259-w2000-h1114" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2611,7 +2622,7 @@ Having its own building entitlement provides a great opportunity for further con
         </div>
 
         <div class="card" id="card-32" data-idx="32" data-property-id="2020271118">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3qHIsFkCO_c3MDcqTu93f32_7bI=/660x440/filters:format(jpeg):quality(80)/2020271118_1_1_250915_114432-w2048-h1536" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3qHIsFkCO_c3MDcqTu93f32_7bI=/660x440/filters:format(jpeg):quality(80)/2020271118_1_1_250915_114432-w2048-h1536" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2683,7 +2694,7 @@ Whether you&#x27;re chasing a tree c...</div>
         </div>
 
         <div class="card" id="card-33" data-idx="33" data-property-id="2020394172">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/bDWX9XZJFC_mLHWHxiNx-PkWYw0=/660x440/filters:format(jpeg):quality(80)/2020394172_1_1_251103_111245-w1200-h808" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/bDWX9XZJFC_mLHWHxiNx-PkWYw0=/660x440/filters:format(jpeg):quality(80)/2020394172_1_1_251103_111245-w1200-h808" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2756,7 +2767,7 @@ Positioned in the tightly held locality of Roslyn renowned for its productive so
         </div>
 
         <div class="card" id="card-34" data-idx="34" data-property-id="2019146612">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/45gqHrhnkimbk1_BDt4hdpufN6I=/660x440/filters:format(jpeg):quality(80)/2019146612_3_1_260123_052412-w4032-h2688" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/45gqHrhnkimbk1_BDt4hdpufN6I=/660x440/filters:format(jpeg):quality(80)/2019146612_3_1_260123_052412-w4032-h2688" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2827,7 +2838,7 @@ Positioned in the tightly held locality of Roslyn renowned for its productive so
         </div>
 
         <div class="card" id="card-35" data-idx="35" data-property-id="2020627180">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/q0hxb0AGbTxT9RWf09ecwF6b5RE=/660x440/filters:format(jpeg):quality(80)/2020627180_1_1_260223_032754-w5272-h3948" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/q0hxb0AGbTxT9RWf09ecwF6b5RE=/660x440/filters:format(jpeg):quality(80)/2020627180_1_1_260223_032754-w5272-h3948" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2900,7 +2911,7 @@ Set against breathtaking rural vistas, this beautifully renovated double-story b
         </div>
 
         <div class="card" id="card-36" data-idx="36" data-property-id="2019913217">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/a_dwzMZtKuEB0Tbwft-FeC6Fcqw=/660x440/filters:format(jpeg):quality(80)/2019913217_2_1_250406_111350-w5280-h3956" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/a_dwzMZtKuEB0Tbwft-FeC6Fcqw=/660x440/filters:format(jpeg):quality(80)/2019913217_2_1_250406_111350-w5280-h3956" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -2971,7 +2982,7 @@ Set against breathtaking rural vistas, this beautifully renovated double-story b
         </div>
 
         <div class="card" id="card-37" data-idx="37" data-property-id="2020466136">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/C4yXtC8Lf63c4Ynbu-hfLpa16Kk=/660x440/filters:format(jpeg):quality(80)/2020466136_1_1_251202_115058-w1920-h1279" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/C4yXtC8Lf63c4Ynbu-hfLpa16Kk=/660x440/filters:format(jpeg):quality(80)/2020466136_1_1_251202_115058-w1920-h1279" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3043,7 +3054,7 @@ Set among rolling hills in picturesque Oallen, this expansive 100-acre property 
         </div>
 
         <div class="card" id="card-38" data-idx="38" data-property-id="2020033500">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/gxVI4Bce3gOBKIcmVjK-GFE7Ex8=/660x440/filters:format(jpeg):quality(80)/2020033500_1_1_250602_015450-w4096-h3072" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/gxVI4Bce3gOBKIcmVjK-GFE7Ex8=/660x440/filters:format(jpeg):quality(80)/2020033500_1_1_250602_015450-w4096-h3072" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3116,7 +3127,7 @@ Set among rolling hills in picturesque Oallen, this expansive 100-acre property 
         </div>
 
         <div class="card" id="card-39" data-idx="39" data-property-id="2020477514">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/zBU8n3afJIjv25ZeBmw-SF5c0PM=/660x440/filters:format(jpeg):quality(80)/2020477514_1_1_251209_035205-w1536-h1024" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/zBU8n3afJIjv25ZeBmw-SF5c0PM=/660x440/filters:format(jpeg):quality(80)/2020477514_1_1_251209_035205-w1536-h1024" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3189,7 +3200,7 @@ Some of the many features of Teasdale include:
         </div>
 
         <div class="card" id="card-40" data-idx="40" data-property-id="2017597831">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0wp3nub9YVsXqeMq4ZphvYcJqmI=/660x440/filters:format(jpeg):quality(80)/2017597831_1_1_220216_123037-w2000-h1333" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0wp3nub9YVsXqeMq4ZphvYcJqmI=/660x440/filters:format(jpeg):quality(80)/2017597831_1_1_220216_123037-w2000-h1333" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3261,7 +3272,7 @@ Fenced into 4 main paddocks, the country features basalt soil with some excellen
         </div>
 
         <div class="card" id="card-41" data-idx="41" data-property-id="2019522609">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/HzbKa7G5Cpqnq_fW4l8_uzf9p_w=/660x440/filters:format(jpeg):quality(80)/2019522609_5_1_240927_122700-w2488-h1400" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/HzbKa7G5Cpqnq_fW4l8_uzf9p_w=/660x440/filters:format(jpeg):quality(80)/2019522609_5_1_240927_122700-w2488-h1400" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3332,7 +3343,7 @@ Fenced into 4 main paddocks, the country features basalt soil with some excellen
         </div>
 
         <div class="card" id="card-42" data-idx="42" data-property-id="2018852916">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/eTs8DfsCha7AuCAwS4ny2N-SNtQ=/660x440/filters:format(jpeg):quality(80)/2018852916_1_1_231023_102402-w1600-h1198" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/eTs8DfsCha7AuCAwS4ny2N-SNtQ=/660x440/filters:format(jpeg):quality(80)/2018852916_1_1_231023_102402-w1600-h1198" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3405,7 +3416,7 @@ If you are looking for an ideal property which offers a diverse lifestyle such b
         </div>
 
         <div class="card" id="card-43" data-idx="43" data-property-id="2020409290">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/gYw_jsVWVuV0BJNS07Ol7zEGzu0=/660x440/filters:format(jpeg):quality(80)/2020409290_1_1_251110_013531-w5472-h3648" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/gYw_jsVWVuV0BJNS07Ol7zEGzu0=/660x440/filters:format(jpeg):quality(80)/2020409290_1_1_251110_013531-w5472-h3648" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3480,7 +3491,7 @@ Features:
         </div>
 
         <div class="card" id="card-44" data-idx="44" data-property-id="2020079869">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/nN4qwQdzAv87CtXYAPTVcv07gxA=/660x440/filters:format(jpeg):quality(80)/2020079869_1_1_250623_042757-w2048-h1534" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/nN4qwQdzAv87CtXYAPTVcv07gxA=/660x440/filters:format(jpeg):quality(80)/2020079869_1_1_250623_042757-w2048-h1534" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3551,7 +3562,7 @@ Features:
         </div>
 
         <div class="card" id="card-45" data-idx="45" data-property-id="2020247682">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/b2h5i5G-GGpZznR-r44xWGjkuuk=/660x440/filters:format(jpeg):quality(80)/2020247682_1_1_250904_062909-w9999-h6666" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/b2h5i5G-GGpZznR-r44xWGjkuuk=/660x440/filters:format(jpeg):quality(80)/2020247682_1_1_250904_062909-w9999-h6666" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3622,7 +3633,7 @@ Features:
         </div>
 
         <div class="card" id="card-46" data-idx="46" data-property-id="2020532191">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/KIrQlhkQJk39hhNGWtNztEF23hg=/660x440/filters:format(jpeg):quality(80)/2020532191_7_1_260115_103058-w2000-h1500" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/KIrQlhkQJk39hhNGWtNztEF23hg=/660x440/filters:format(jpeg):quality(80)/2020532191_7_1_260115_103058-w2000-h1500" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3694,7 +3705,7 @@ Thoughtfully fenced into four paddocks and serviced b...</div>
         </div>
 
         <div class="card" id="card-47" data-idx="47" data-property-id="2020476283">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/kmjHqsKuvEUlsf1TJFmOcnxr89s=/660x440/filters:format(jpeg):quality(80)/2020476283_17_1_251208_101147-w1920-h1279" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/kmjHqsKuvEUlsf1TJFmOcnxr89s=/660x440/filters:format(jpeg):quality(80)/2020476283_17_1_251208_101147-w1920-h1279" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3766,7 +3777,7 @@ Thoughtfully fenced into four paddocks and serviced b...</div>
         </div>
 
         <div class="card" id="card-48" data-idx="48" data-property-id="2020413674">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/r6dH4cRZD7NIVPX9ltGOGDt7iKM=/660x440/filters:format(jpeg):quality(80)/2020413674_1_1_251111_053325-w640-h480" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/r6dH4cRZD7NIVPX9ltGOGDt7iKM=/660x440/filters:format(jpeg):quality(80)/2020413674_1_1_251111_053325-w640-h480" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3838,7 +3849,7 @@ Zoned RU2 Rural Landscape, this ...</div>
         </div>
 
         <div class="card" id="card-49" data-idx="49" data-property-id="2020484373">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/rSrFXUCkFquq6Dzseh-2sxp15oY=/660x440/filters:format(jpeg):quality(80)/2020484373_1_1_251212_013227-w2492-h1400" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/rSrFXUCkFquq6Dzseh-2sxp15oY=/660x440/filters:format(jpeg):quality(80)/2020484373_1_1_251212_013227-w2492-h1400" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3910,7 +3921,7 @@ Step inside to a warm and inviting open-plan living, dining, kitchen and family 
         </div>
 
         <div class="card" id="card-50" data-idx="50" data-property-id="2020364106">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Dsb7jOyz4L5odcpbIJsJ9yNRV8s=/660x440/filters:format(jpeg):quality(80)/2020364106_1_1_251208_050016-w1200-h899" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Dsb7jOyz4L5odcpbIJsJ9yNRV8s=/660x440/filters:format(jpeg):quality(80)/2020364106_1_1_251208_050016-w1200-h899" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -3982,7 +3993,7 @@ The 2014 Hi-Tech transportable home captures stunning eastern views the perfect 
         </div>
 
         <div class="card" id="card-51" data-idx="51" data-property-id="2019672233">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/QZmW0CcmHZYO-IUXeY4YuTLzJP0=/660x440/filters:format(jpeg):quality(80)/2019672233_1_1_241202_084958-w2491-h1400" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/QZmW0CcmHZYO-IUXeY4YuTLzJP0=/660x440/filters:format(jpeg):quality(80)/2019672233_1_1_241202_084958-w2491-h1400" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4054,7 +4065,7 @@ A trul...</div>
         </div>
 
         <div class="card" id="card-52" data-idx="52" data-property-id="2020404065">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PjqpaqQG6YeI2T2-Xsb77xiGIu4=/660x440/filters:format(jpeg):quality(80)/2020404065_1_1_251106_063747-w3500-h1969" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PjqpaqQG6YeI2T2-Xsb77xiGIu4=/660x440/filters:format(jpeg):quality(80)/2020404065_1_1_251106_063747-w3500-h1969" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4129,7 +4140,7 @@ The Residence - Near new, Effortless Living
         </div>
 
         <div class="card" id="card-53" data-idx="53" data-property-id="2020506171">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/dCuZ_EaNAKPgW_iGzBefZ7f5kr0=/660x440/filters:format(jpeg):quality(80)/2020506171_1_1_260103_114931-w1200-h899" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/dCuZ_EaNAKPgW_iGzBefZ7f5kr0=/660x440/filters:format(jpeg):quality(80)/2020506171_1_1_260103_114931-w1200-h899" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4202,7 +4213,7 @@ The property has a dwelling entitlement and currently has a shed and 20 foot con
         </div>
 
         <div class="card" id="card-54" data-idx="54" data-property-id="2020670167">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/NfmJGikhxyVjJAzV39m7SK1P0OI=/660x440/filters:format(jpeg):quality(80)/2020670167_1_1_260310_110241-w2000-h1500" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/NfmJGikhxyVjJAzV39m7SK1P0OI=/660x440/filters:format(jpeg):quality(80)/2020670167_1_1_260310_110241-w2000-h1500" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4273,7 +4284,7 @@ The property has a dwelling entitlement and currently has a shed and 20 foot con
         </div>
 
         <div class="card" id="card-55" data-idx="55" data-property-id="2019909856">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/N0QbSurehWfyye1H8M6UfZNC8k4=/660x440/filters:format(jpeg):quality(80)/2019909856_1_1_250403_101645-w2048-h1366" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/N0QbSurehWfyye1H8M6UfZNC8k4=/660x440/filters:format(jpeg):quality(80)/2019909856_1_1_250403_101645-w2048-h1366" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4346,7 +4357,7 @@ The block has been in the one family and farmed since the 1930&#x27;s and its lo
         </div>
 
         <div class="card" id="card-56" data-idx="56" data-property-id="2019722983">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Rg0D-Zw2j2hFsRCIKKTCW8QeTa8=/660x440/filters:format(jpeg):quality(80)/2019722983_19_1_251103_112818-w1050-h788" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Rg0D-Zw2j2hFsRCIKKTCW8QeTa8=/660x440/filters:format(jpeg):quality(80)/2019722983_19_1_251103_112818-w1050-h788" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4418,7 +4429,7 @@ This charming retreat combines modern comfort with country elegance. Enjoy two g
         </div>
 
         <div class="card" id="card-57" data-idx="57" data-property-id="2020561128">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/EjLCmPMZvQifv2gdo8x6R0vD0TU=/660x440/filters:format(jpeg):quality(80)/2020561128_1_1_260129_121428-w4000-h2667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/EjLCmPMZvQifv2gdo8x6R0vD0TU=/660x440/filters:format(jpeg):quality(80)/2020561128_1_1_260129_121428-w4000-h2667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4489,7 +4500,7 @@ This charming retreat combines modern comfort with country elegance. Enjoy two g
         </div>
 
         <div class="card" id="card-58" data-idx="58" data-property-id="2020661294">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/t6OJaLoNas_XwW8VbcLkT87onPw=/660x440/filters:format(jpeg):quality(80)/2020514833_26_1_260108_010633-w1024-h768" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/t6OJaLoNas_XwW8VbcLkT87onPw=/660x440/filters:format(jpeg):quality(80)/2020514833_26_1_260108_010633-w1024-h768" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4560,7 +4571,7 @@ This charming retreat combines modern comfort with country elegance. Enjoy two g
         </div>
 
         <div class="card" id="card-59" data-idx="59" data-property-id="2020580919">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Z3OfnDr38lDqm79ujk-41x9t-HY=/660x440/filters:format(jpeg):quality(80)/2020580919_1_1_260205_121520-w4134-h2756" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Z3OfnDr38lDqm79ujk-41x9t-HY=/660x440/filters:format(jpeg):quality(80)/2020580919_1_1_260205_121520-w4134-h2756" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4632,7 +4643,7 @@ Set on approximately 50 acres of fertile, well-balanced land with sweeping front
         </div>
 
         <div class="card" id="card-60" data-idx="60" data-property-id="2019761475">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/8Gxz44X2zwsDcSpj-5FYgkhR55g=/660x440/filters:format(jpeg):quality(80)/2019761475_1_1_250131_031032-w1620-h1080" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/8Gxz44X2zwsDcSpj-5FYgkhR55g=/660x440/filters:format(jpeg):quality(80)/2019761475_1_1_250131_031032-w1620-h1080" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4704,7 +4715,7 @@ Fully fenced boundaries, some new fencing, a mature stand of Radiata Pines, a le
         </div>
 
         <div class="card" id="card-61" data-idx="61" data-property-id="2020617988">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/jEhZcRiVfnbqNZ0pj4LnMPuI5IY=/660x440/filters:format(jpeg):quality(80)/2020617988_1_1_260218_113409-w8192-h5464" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/jEhZcRiVfnbqNZ0pj4LnMPuI5IY=/660x440/filters:format(jpeg):quality(80)/2020617988_1_1_260218_113409-w8192-h5464" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4776,7 +4787,7 @@ The comfortable four-bedroom home is well positione...</div>
         </div>
 
         <div class="card" id="card-62" data-idx="62" data-property-id="2020634526">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/By_C3-G8PFxBJGa-cF57O2ZRzaM=/660x440/filters:format(jpeg):quality(80)/2020634526_1_1_260225_034140-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/By_C3-G8PFxBJGa-cF57O2ZRzaM=/660x440/filters:format(jpeg):quality(80)/2020634526_1_1_260225_034140-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4851,7 +4862,7 @@ Features
         </div>
 
         <div class="card" id="card-63" data-idx="63" data-property-id="2020523359">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/zgFlD2QcBU8-iidFaLEuaSm_JXI=/660x440/filters:format(jpeg):quality(80)/2020523359_3_1_260113_124121-w1600-h1067" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/zgFlD2QcBU8-iidFaLEuaSm_JXI=/660x440/filters:format(jpeg):quality(80)/2020523359_3_1_260113_124121-w1600-h1067" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4923,7 +4934,7 @@ Built in 2022, this beautifully positioned home offers, three-bedroom, open plan
         </div>
 
         <div class="card" id="card-64" data-idx="64" data-property-id="2019834695">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ebnEf7hkOo03qR3HFpcZyi2q6SY=/660x440/filters:format(jpeg):quality(80)/2019834695_17_1_250304_120856-w2005-h1338" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ebnEf7hkOo03qR3HFpcZyi2q6SY=/660x440/filters:format(jpeg):quality(80)/2019834695_17_1_250304_120856-w2005-h1338" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -4994,7 +5005,7 @@ Built in 2022, this beautifully positioned home offers, three-bedroom, open plan
         </div>
 
         <div class="card" id="card-65" data-idx="65" data-property-id="2019937934">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/5cZ3agcBiTEIp63VHWgBp_AJ29A=/660x440/filters:format(jpeg):quality(80)/2019937934_1_1_250417_042008-w5472-h3648" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/5cZ3agcBiTEIp63VHWgBp_AJ29A=/660x440/filters:format(jpeg):quality(80)/2019937934_1_1_250417_042008-w5472-h3648" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5067,7 +5078,7 @@ Property Features:
         </div>
 
         <div class="card" id="card-66" data-idx="66" data-property-id="2020421058">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/byeBDH33yKJIS7axQbqdHhQ8Xqs=/660x440/filters:format(jpeg):quality(80)/2020421058_22_1_251113_094246-w5817-h3878" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/byeBDH33yKJIS7axQbqdHhQ8Xqs=/660x440/filters:format(jpeg):quality(80)/2020421058_22_1_251113_094246-w5817-h3878" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5140,7 +5151,7 @@ Set high on the mountain top of Gingkin Highlands close to Jenolan Caves and dee
         </div>
 
         <div class="card" id="card-67" data-idx="67" data-property-id="2020293236">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Gx40uY1Owc5AUZOdT8pYlakuu8o=/660x440/filters:format(jpeg):quality(80)/2020293236_1_1_250924_054016-w3000-h2247" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Gx40uY1Owc5AUZOdT8pYlakuu8o=/660x440/filters:format(jpeg):quality(80)/2020293236_1_1_250924_054016-w3000-h2247" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5213,7 +5224,7 @@ The three-bedroom, two-bathroom home is move-in ready, with floating timber floo
         </div>
 
         <div class="card" id="card-68" data-idx="68" data-property-id="2020408681">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/wJzzPWqYYNmFwVHnCzYvAt2vD3s=/660x440/filters:format(jpeg):quality(80)/2020408681_1_1_251109_112333-w5712-h4284" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/wJzzPWqYYNmFwVHnCzYvAt2vD3s=/660x440/filters:format(jpeg):quality(80)/2020408681_1_1_251109_112333-w5712-h4284" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5285,7 +5296,7 @@ Two 4 bed Homes on 100 Acres, OFF GRID, Privately Separated.</div>
         </div>
 
         <div class="card" id="card-69" data-idx="69" data-property-id="2019277883">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/sOnquxatRIRwywKBh6SdXacRFmc=/660x440/filters:format(jpeg):quality(80)/2019277883_1_1_240530_055848-w8064-h6048" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/sOnquxatRIRwywKBh6SdXacRFmc=/660x440/filters:format(jpeg):quality(80)/2019277883_1_1_240530_055848-w8064-h6048" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5357,7 +5368,7 @@ Boasting a comfortable homestead, breathtaking views, quality shedding, ample wa
         </div>
 
         <div class="card" id="card-70" data-idx="70" data-property-id="2019957443">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Vtg9T43jVCVuJ7p948e1pIqT4vY=/660x440/filters:format(jpeg):quality(80)/2019957443_13_1_250429_085212-w4032-h2269" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Vtg9T43jVCVuJ7p948e1pIqT4vY=/660x440/filters:format(jpeg):quality(80)/2019957443_13_1_250429_085212-w4032-h2269" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5429,7 +5440,7 @@ Positioned peacefully in one of the most highly sought after rural locales of th
         </div>
 
         <div class="card" id="card-71" data-idx="71" data-property-id="2020610995">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ndd0VylNHZMxa2doLwvxpMaO0kY=/660x440/filters:format(jpeg):quality(80)/2020610995_1_1_260217_011951-w2560-h1707" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ndd0VylNHZMxa2doLwvxpMaO0kY=/660x440/filters:format(jpeg):quality(80)/2020610995_1_1_260217_011951-w2560-h1707" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5500,7 +5511,7 @@ Positioned peacefully in one of the most highly sought after rural locales of th
         </div>
 
         <div class="card" id="card-72" data-idx="72" data-property-id="2020433208">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Hq3EjmVTZDBx1wDvt-uSmKKNY2w=/660x440/filters:format(jpeg):quality(80)/2020433208_1_1_251118_091730-w1799-h1200" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Hq3EjmVTZDBx1wDvt-uSmKKNY2w=/660x440/filters:format(jpeg):quality(80)/2020433208_1_1_251118_091730-w1799-h1200" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5572,7 +5583,7 @@ The established property captures the essenc...</div>
         </div>
 
         <div class="card" id="card-73" data-idx="73" data-property-id="2020005139">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3EuqGrnanNMUGbvLAyYpTP_w_r8=/660x440/filters:format(jpeg):quality(80)/2020005139_1_1_250520_030808-w3834-h2876" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3EuqGrnanNMUGbvLAyYpTP_w_r8=/660x440/filters:format(jpeg):quality(80)/2020005139_1_1_250520_030808-w3834-h2876" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5643,7 +5654,7 @@ The established property captures the essenc...</div>
         </div>
 
         <div class="card" id="card-74" data-idx="74" data-property-id="2018646580">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/QjRDrrbbbe8nRJwjTDg3NNOcOfg=/660x440/filters:format(jpeg):quality(80)/2018646580_25_1_240130_103801-w4000-h2250" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/QjRDrrbbbe8nRJwjTDg3NNOcOfg=/660x440/filters:format(jpeg):quality(80)/2018646580_25_1_240130_103801-w4000-h2250" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5716,7 +5727,7 @@ Locati...</div>
         </div>
 
         <div class="card" id="card-75" data-idx="75" data-property-id="2018716560">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/7alhUmy7CiHV9vRPMgfWmIv_ec8=/660x440/filters:format(jpeg):quality(80)/2018716560_1_1_230821_015206-w800-h600" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/7alhUmy7CiHV9vRPMgfWmIv_ec8=/660x440/filters:format(jpeg):quality(80)/2018716560_1_1_230821_015206-w800-h600" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5792,7 +5803,7 @@ Approx. 59.2 ha or Approx. 146 Acres
         </div>
 
         <div class="card" id="card-76" data-idx="76" data-property-id="2020368063">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ANgIuMkPBy89qMKwmHBI1ztpsjU=/660x440/filters:format(jpeg):quality(80)/2020368063_1_1_251112_010342-w5472-h3648" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/ANgIuMkPBy89qMKwmHBI1ztpsjU=/660x440/filters:format(jpeg):quality(80)/2020368063_1_1_251112_010342-w5472-h3648" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5866,7 +5877,7 @@ Approx. 59.2 ha or Approx. 146 Acres
         </div>
 
         <div class="card" id="card-77" data-idx="77" data-property-id="2020328363">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/BozNsmCYKBV4aIWdFH8YIF8uc70=/660x440/filters:format(jpeg):quality(80)/2020328363_1_1_251008_073551-w1920-h1079" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/BozNsmCYKBV4aIWdFH8YIF8uc70=/660x440/filters:format(jpeg):quality(80)/2020328363_1_1_251008_073551-w1920-h1079" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -5939,7 +5950,7 @@ The main residence is a spacious four-bedroom, two-bathroom home, offering comfo
         </div>
 
         <div class="card" id="card-78" data-idx="78" data-property-id="2020568700">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/up0g3J64E8rDgfumvlZ6rVL-OYk=/660x440/filters:format(jpeg):quality(80)/2019341568_7_1_250129_100714-w4000-h2667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/up0g3J64E8rDgfumvlZ6rVL-OYk=/660x440/filters:format(jpeg):quality(80)/2019341568_7_1_250129_100714-w4000-h2667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6010,7 +6021,7 @@ The main residence is a spacious four-bedroom, two-bathroom home, offering comfo
         </div>
 
         <div class="card" id="card-79" data-idx="79" data-property-id="2019563976">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/lBrC3dipgA0GD7E2do0V_LVGYBg=/660x440/filters:format(jpeg):quality(80)/2019563976_9_1_241015_081426-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/lBrC3dipgA0GD7E2do0V_LVGYBg=/660x440/filters:format(jpeg):quality(80)/2019563976_9_1_241015_081426-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6082,7 +6093,7 @@ This 40.07-hectare property is ideal for cattle, sheep, or horses with four full
         </div>
 
         <div class="card" id="card-80" data-idx="80" data-property-id="2020574001">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/FswOzc_H1vjNgJ4sjGiAMWlxE-g=/660x440/filters:format(jpeg):quality(80)/2020574001_1_1_260203_041530-w1024-h768" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/FswOzc_H1vjNgJ4sjGiAMWlxE-g=/660x440/filters:format(jpeg):quality(80)/2020574001_1_1_260203_041530-w1024-h768" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6159,7 +6170,7 @@ Then t...</div>
         </div>
 
         <div class="card" id="card-81" data-idx="81" data-property-id="2020068105">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/9rQFxBfbi9RM7eFS7dhrgf-bK3A=/660x440/filters:format(jpeg):quality(80)/2020068105_1_1_250617_064721-w4032-h3024" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/9rQFxBfbi9RM7eFS7dhrgf-bK3A=/660x440/filters:format(jpeg):quality(80)/2020068105_1_1_250617_064721-w4032-h3024" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6234,7 +6245,7 @@ Key investment highlights include:
         </div>
 
         <div class="card" id="card-82" data-idx="82" data-property-id="2020631481">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/DZ4jfHk8Im-V-i4N-pGBjUD_tcI=/660x440/filters:format(jpeg):quality(80)/2020631481_1_1_260224_045445-w5272-h3948" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/DZ4jfHk8Im-V-i4N-pGBjUD_tcI=/660x440/filters:format(jpeg):quality(80)/2020631481_1_1_260224_045445-w5272-h3948" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6307,7 +6318,7 @@ A creek wind...</div>
         </div>
 
         <div class="card" id="card-83" data-idx="83" data-property-id="2019483149">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/aWAyfVqU31y1gb5WVLB9X-55gzE=/660x440/filters:format(jpeg):quality(80)/2019483149_1_1_251028_014703-w1920-h1280" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/aWAyfVqU31y1gb5WVLB9X-55gzE=/660x440/filters:format(jpeg):quality(80)/2019483149_1_1_251028_014703-w1920-h1280" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6379,7 +6390,7 @@ The property features two reliable dams and the picturesque Tantulean Creek runn
         </div>
 
         <div class="card" id="card-84" data-idx="84" data-property-id="2020568664">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/lf9v1aszvaqFA74TqgrjKkRFWx8=/660x440/filters:format(jpeg):quality(80)/2020568664_1_1_260201_104939-w2048-h1366" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/lf9v1aszvaqFA74TqgrjKkRFWx8=/660x440/filters:format(jpeg):quality(80)/2020568664_1_1_260201_104939-w2048-h1366" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6451,7 +6462,7 @@ Enjoy the be...</div>
         </div>
 
         <div class="card" id="card-85" data-idx="85" data-property-id="2020382484">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/tUyQlwtaEnF6-S0a-fQLpAYkU-M=/660x440/filters:format(jpeg):quality(80)/2020382484_2_1_251029_112554-w2100-h1573" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/tUyQlwtaEnF6-S0a-fQLpAYkU-M=/660x440/filters:format(jpeg):quality(80)/2020382484_2_1_251029_112554-w2100-h1573" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6523,7 +6534,7 @@ Thoughtfully enhancing the homes...</div>
         </div>
 
         <div class="card" id="card-86" data-idx="86" data-property-id="2019865323">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/1GsardG1r6x8q8fRWD2xjwakgfY=/660x440/filters:format(jpeg):quality(80)/2019860312_1_1_250313_055102-w1600-h900" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/1GsardG1r6x8q8fRWD2xjwakgfY=/660x440/filters:format(jpeg):quality(80)/2019860312_1_1_250313_055102-w1600-h900" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6595,7 +6606,7 @@ The residence offers a family friendly layout, upon entry you will notice the la
         </div>
 
         <div class="card" id="card-87" data-idx="87" data-property-id="2020577934">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/nqc1UsFUPqHdDTPS7pYzpFehJTI=/660x440/filters:format(jpeg):quality(80)/2020577934_1_1_260204_040333-w2100-h1400" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/nqc1UsFUPqHdDTPS7pYzpFehJTI=/660x440/filters:format(jpeg):quality(80)/2020577934_1_1_260204_040333-w2100-h1400" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6668,7 +6679,7 @@ The home features:
         </div>
 
         <div class="card" id="card-88" data-idx="88" data-property-id="2019945555">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/vM8CGZ8ESOoHnDT0EpPT8ok0LGY=/660x440/filters:format(jpeg):quality(80)/2019945555_1_1_250423_022031-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/vM8CGZ8ESOoHnDT0EpPT8ok0LGY=/660x440/filters:format(jpeg):quality(80)/2019945555_1_1_250423_022031-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6745,7 +6756,7 @@ Key features include:
         </div>
 
         <div class="card" id="card-89" data-idx="89" data-property-id="2020502612">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/hB77dkKRsVzud-sr46uOSpMn32Q=/660x440/filters:format(jpeg):quality(80)/2020502612_4_1_251227_052738-w4000-h2662" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/hB77dkKRsVzud-sr46uOSpMn32Q=/660x440/filters:format(jpeg):quality(80)/2020502612_4_1_251227_052738-w4000-h2662" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6817,7 +6828,7 @@ Set on 40 pristine acres (additional acreage available - 4 lots) sits an archite
         </div>
 
         <div class="card" id="card-90" data-idx="90" data-property-id="2020502619">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/hB77dkKRsVzud-sr46uOSpMn32Q=/660x440/filters:format(jpeg):quality(80)/2020502612_4_1_251227_052738-w4000-h2662" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/hB77dkKRsVzud-sr46uOSpMn32Q=/660x440/filters:format(jpeg):quality(80)/2020502612_4_1_251227_052738-w4000-h2662" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6889,7 +6900,7 @@ Set on 40 pristine acres (additional acreage available - 4 lots) sits an archite
         </div>
 
         <div class="card" id="card-91" data-idx="91" data-property-id="2019995902">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/JTLfHOvCV1i3PCXc9p1xv3aaBJk=/660x440/filters:format(jpeg):quality(80)/2019995902_1_1_250515_024008-w1754-h1240" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/JTLfHOvCV1i3PCXc9p1xv3aaBJk=/660x440/filters:format(jpeg):quality(80)/2019995902_1_1_250515_024008-w1754-h1240" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -6962,7 +6973,7 @@ Set on 40 pristine acres (additional acreage available - 4 lots) sits an archite
         </div>
 
         <div class="card" id="card-92" data-idx="92" data-property-id="2019586135">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/a2WSqz8dc9gi-oDaxdC9UyhS7nk=/660x440/filters:format(jpeg):quality(80)/2019586135_1_1_241024_125609-w1920-h1439" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/a2WSqz8dc9gi-oDaxdC9UyhS7nk=/660x440/filters:format(jpeg):quality(80)/2019586135_1_1_241024_125609-w1920-h1439" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7034,7 +7045,7 @@ Surrounded by pristine native bushland this block is a versatile property, offer
         </div>
 
         <div class="card" id="card-93" data-idx="93" data-property-id="2020581729">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/9X_PjLmkUoF9v6Txy2dZeFPEtj4=/660x440/filters:format(jpeg):quality(80)/2020581729_1_1_260205_022749-w5472-h3648" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/9X_PjLmkUoF9v6Txy2dZeFPEtj4=/660x440/filters:format(jpeg):quality(80)/2020581729_1_1_260205_022749-w5472-h3648" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7105,7 +7116,7 @@ Surrounded by pristine native bushland this block is a versatile property, offer
         </div>
 
         <div class="card" id="card-94" data-idx="94" data-property-id="2020448525">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/u50hkc8QdFRwKhavXQ6sPCKzCrY=/660x440/filters:format(jpeg):quality(80)/2018897355_1_1_231113_025945-w5184-h3456" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/u50hkc8QdFRwKhavXQ6sPCKzCrY=/660x440/filters:format(jpeg):quality(80)/2018897355_1_1_231113_025945-w5184-h3456" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7176,7 +7187,7 @@ Surrounded by pristine native bushland this block is a versatile property, offer
         </div>
 
         <div class="card" id="card-95" data-idx="95" data-property-id="2020162256">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/dZHNzyqaEBbNESz3EytBZ4ocr4g=/660x440/filters:format(jpeg):quality(80)/2020162256_11_1_250730_025949-w3000-h1999" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/dZHNzyqaEBbNESz3EytBZ4ocr4g=/660x440/filters:format(jpeg):quality(80)/2020162256_11_1_250730_025949-w3000-h1999" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7249,7 +7260,7 @@ Located just 5km from Murrumbateman village and 25 minutes from Canberra&#x27;s 
         </div>
 
         <div class="card" id="card-96" data-idx="96" data-property-id="2020423196">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/kVEquCSQSDgOV7KWTIhdv_YLsdI=/660x440/filters:format(jpeg):quality(80)/2020423196_1_1_251113_054055-w1200-h900" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/kVEquCSQSDgOV7KWTIhdv_YLsdI=/660x440/filters:format(jpeg):quality(80)/2020423196_1_1_251113_054055-w1200-h900" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7328,7 +7339,7 @@ Located just 5km from Murrumbateman village and 25 minutes from Canberra&#x27;s 
         </div>
 
         <div class="card" id="card-97" data-idx="97" data-property-id="2019393986">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3bUO2Ekba2L1pg3mXtSvxvJdoiU=/660x440/filters:format(jpeg):quality(80)/2019393986_8_1_240731_010946-w3000-h2247" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3bUO2Ekba2L1pg3mXtSvxvJdoiU=/660x440/filters:format(jpeg):quality(80)/2019393986_8_1_240731_010946-w3000-h2247" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7400,7 +7411,7 @@ Perfect for a range of uses, whilst having an on site cabin + shipping container
         </div>
 
         <div class="card" id="card-98" data-idx="98" data-property-id="2020410379">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Rfiejh6Su20qH1I6_ZZngC8ClJ4=/660x440/filters:format(jpeg):quality(80)/2020410379_1_1_251110_050205-w2048-h1366" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Rfiejh6Su20qH1I6_ZZngC8ClJ4=/660x440/filters:format(jpeg):quality(80)/2020410379_1_1_251110_050205-w2048-h1366" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7477,7 +7488,7 @@ The outstanding features include:
         </div>
 
         <div class="card" id="card-99" data-idx="99" data-property-id="2020045738">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/GO1l50kxKA4D-JmQMGEu_AbDylY=/660x440/filters:format(jpeg):quality(80)/2020045738_1_1_250606_125800-w3000-h2247" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/GO1l50kxKA4D-JmQMGEu_AbDylY=/660x440/filters:format(jpeg):quality(80)/2020045738_1_1_250606_125800-w3000-h2247" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7550,7 +7561,7 @@ The property offers excellent flexibi...</div>
         </div>
 
         <div class="card" id="card-100" data-idx="100" data-property-id="2020346324">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/CtmhFCBYnGdCsm4w_bspR-acd4I=/660x440/filters:format(jpeg):quality(80)/2020346324_1_1_251015_054657-w1200-h900" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/CtmhFCBYnGdCsm4w_bspR-acd4I=/660x440/filters:format(jpeg):quality(80)/2020346324_1_1_251015_054657-w1200-h900" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7621,7 +7632,7 @@ The property offers excellent flexibi...</div>
         </div>
 
         <div class="card" id="card-101" data-idx="101" data-property-id="2020613852">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/cCAWSRHPjx30wDYG__dr1UCP_dQ=/660x440/filters:format(jpeg):quality(80)/2020613852_1_1_260217_111742-w2492-h1400" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/cCAWSRHPjx30wDYG__dr1UCP_dQ=/660x440/filters:format(jpeg):quality(80)/2020613852_1_1_260217_111742-w2492-h1400" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7693,7 +7704,7 @@ With its incredible views, basalt soils, scattered native trees, and gentle undu
         </div>
 
         <div class="card" id="card-102" data-idx="102" data-property-id="2017968510">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/H74t1EI6ErQTvASIbrWFTjzt9tY=/660x440/filters:format(jpeg):quality(80)/2017968510_2_1_220731_110627-w4000-h3000" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/H74t1EI6ErQTvASIbrWFTjzt9tY=/660x440/filters:format(jpeg):quality(80)/2017968510_2_1_220731_110627-w4000-h3000" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7767,7 +7778,7 @@ Located in the enviable Southern Highlands, 18* kilometres from Moss Vale, 10* k
         </div>
 
         <div class="card" id="card-103" data-idx="103" data-property-id="2020504381">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/oRrQ2Ts_5zwZJymLsaSTsrUAOLk=/660x440/filters:format(jpeg):quality(80)/2020504381_1_1_251230_113722-w8155-h5427" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/oRrQ2Ts_5zwZJymLsaSTsrUAOLk=/660x440/filters:format(jpeg):quality(80)/2020504381_1_1_251230_113722-w8155-h5427" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7846,7 +7857,7 @@ Features:
         </div>
 
         <div class="card" id="card-104" data-idx="104" data-property-id="2020450945">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/8Mw6-AHxh7yAYe9jM8wYVNf85_E=/660x440/filters:format(jpeg):quality(80)/2020450945_1_1_251126_020417-w4000-h2667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/8Mw6-AHxh7yAYe9jM8wYVNf85_E=/660x440/filters:format(jpeg):quality(80)/2020450945_1_1_251126_020417-w4000-h2667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7919,7 +7930,7 @@ Constructed entirely of reinforced HYMIX concrete , the residence demonstrates a
         </div>
 
         <div class="card" id="card-105" data-idx="105" data-property-id="2019437842">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6OobNTfJWPUu6rybSCCiJXOaui8=/660x440/filters:format(jpeg):quality(80)/2019437842_1_1_240821_014402-w2000-h1333" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6OobNTfJWPUu6rybSCCiJXOaui8=/660x440/filters:format(jpeg):quality(80)/2019437842_1_1_240821_014402-w2000-h1333" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -7995,7 +8006,7 @@ Key features include:
         </div>
 
         <div class="card" id="card-106" data-idx="106" data-property-id="2020002544">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/CZvFmNpX9iwG0rxuWRVDWMNPAKI=/660x440/filters:format(jpeg):quality(80)/2020002544_1_1_250519_030200-w1800-h1199" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/CZvFmNpX9iwG0rxuWRVDWMNPAKI=/660x440/filters:format(jpeg):quality(80)/2020002544_1_1_250519_030200-w1800-h1199" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8074,7 +8085,7 @@ Call this the f...</div>
         </div>
 
         <div class="card" id="card-107" data-idx="107" data-property-id="2020412275">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/h2ICVo6VB1MyzkJZzonmnWKNBsw=/660x440/filters:format(jpeg):quality(80)/2020412275_1_1_251111_012540-w1920-h919" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/h2ICVo6VB1MyzkJZzonmnWKNBsw=/660x440/filters:format(jpeg):quality(80)/2020412275_1_1_251111_012540-w1920-h919" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8146,7 +8157,7 @@ Carbon se...</div>
         </div>
 
         <div class="card" id="card-108" data-idx="108" data-property-id="2020667071">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/jfv717BQyandY274WABJEv--U0w=/660x440/filters:format(jpeg):quality(80)/2020312018_2_1_251001_113540-w2000-h1333" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/jfv717BQyandY274WABJEv--U0w=/660x440/filters:format(jpeg):quality(80)/2020312018_2_1_251001_113540-w2000-h1333" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8218,7 +8229,7 @@ Properties of this scale and quality so close to the city are increasingly diffi
         </div>
 
         <div class="card" id="card-109" data-idx="109" data-property-id="2020412035">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Nm4N9BoYWU7wREknklYnWHTLHMM=/660x440/filters:format(jpeg):quality(80)/2020412035_4_1_251111_123915-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/Nm4N9BoYWU7wREknklYnWHTLHMM=/660x440/filters:format(jpeg):quality(80)/2020412035_4_1_251111_123915-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8290,7 +8301,7 @@ A mix of open timbered country and scenic green valleys sets a peaceful backdrop
         </div>
 
         <div class="card" id="card-110" data-idx="110" data-property-id="2020482330">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/AyLMWHBtWDzLM917_beliO-8KF4=/660x440/filters:format(jpeg):quality(80)/2018529138_1_1_230512_021629-w5272-h3948" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/AyLMWHBtWDzLM917_beliO-8KF4=/660x440/filters:format(jpeg):quality(80)/2018529138_1_1_230512_021629-w5272-h3948" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8366,7 +8377,7 @@ A mix of open timbered country and scenic green valleys sets a peaceful backdrop
         </div>
 
         <div class="card" id="card-111" data-idx="111" data-property-id="2019855039">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/p0RVD_TKsnS6qGTVpsCfDIv43mo=/660x440/filters:format(jpeg):quality(80)/2019855039_1_1_250312_020233-w5472-h3648" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/p0RVD_TKsnS6qGTVpsCfDIv43mo=/660x440/filters:format(jpeg):quality(80)/2019855039_1_1_250312_020233-w5472-h3648" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8439,7 +8450,7 @@ Fenced into six* paddocks, water is secured by six* dams ...</div>
         </div>
 
         <div class="card" id="card-112" data-idx="112" data-property-id="2019525412">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/QaMh5jHKWSgTX3PsD8AZTB5iMrA=/660x440/filters:format(jpeg):quality(80)/2019525412_3_1_240929_114433-w8160-h4590" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/QaMh5jHKWSgTX3PsD8AZTB5iMrA=/660x440/filters:format(jpeg):quality(80)/2019525412_3_1_240929_114433-w8160-h4590" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8513,7 +8524,7 @@ Features include:
         </div>
 
         <div class="card" id="card-113" data-idx="113" data-property-id="2019181407">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/fFe7qxaJ1G3ER65cL0THobMhh2w=/660x440/filters:format(jpeg):quality(80)/2019181407_1_1_240415_032305-w1920-h1099" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/fFe7qxaJ1G3ER65cL0THobMhh2w=/660x440/filters:format(jpeg):quality(80)/2019181407_1_1_240415_032305-w1920-h1099" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8587,7 +8598,7 @@ Features include:
         </div>
 
         <div class="card" id="card-114" data-idx="114" data-property-id="2020391692">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/b9yywMLwLfuNH3Ba6rVQ2NkzFEo=/660x440/filters:format(jpeg):quality(80)/2020391692_1_1_251103_014743-w2000-h1128" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/b9yywMLwLfuNH3Ba6rVQ2NkzFEo=/660x440/filters:format(jpeg):quality(80)/2020391692_1_1_251103_014743-w2000-h1128" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8662,7 +8673,7 @@ Property Features:
         </div>
 
         <div class="card" id="card-115" data-idx="115" data-property-id="2020267516">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/UeaBOns2Bf_m7sMikv9bk0Z76j4=/660x440/filters:format(jpeg):quality(80)/2020267516_1_1_250913_122455-w1442-h1080" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/UeaBOns2Bf_m7sMikv9bk0Z76j4=/660x440/filters:format(jpeg):quality(80)/2020267516_1_1_250913_122455-w1442-h1080" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8739,7 +8750,7 @@ Located in a tightly held district highly regarded as a blue ribbon grazing &amp
         </div>
 
         <div class="card" id="card-116" data-idx="116" data-property-id="2020234652">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/foaWg22FQkzkY61mmahqTPOtYuo=/660x440/filters:format(jpeg):quality(80)/2020234652_1_1_251018_035440-w1200-h899" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/foaWg22FQkzkY61mmahqTPOtYuo=/660x440/filters:format(jpeg):quality(80)/2020234652_1_1_251018_035440-w1200-h899" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8810,7 +8821,7 @@ Located in a tightly held district highly regarded as a blue ribbon grazing &amp
         </div>
 
         <div class="card" id="card-117" data-idx="117" data-property-id="2020633576">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/MEN8ECDZUqLhKOMZ4T2t3V47xxA=/660x440/filters:format(jpeg):quality(80)/2020633576_1_1_260225_125101-w1200-h899" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/MEN8ECDZUqLhKOMZ4T2t3V47xxA=/660x440/filters:format(jpeg):quality(80)/2020633576_1_1_260225_125101-w1200-h899" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8883,7 +8894,7 @@ Offering views to the west and south from numerous locations on the property. Im
         </div>
 
         <div class="card" id="card-118" data-idx="118" data-property-id="2020038574">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/l_R1W6wkUmwRovoEbEpmq4Zutkk=/660x440/filters:format(jpeg):quality(80)/2020038574_1_1_250603_112555-w1920-h1440" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/l_R1W6wkUmwRovoEbEpmq4Zutkk=/660x440/filters:format(jpeg):quality(80)/2020038574_1_1_250603_112555-w1920-h1440" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -8954,7 +8965,7 @@ Offering views to the west and south from numerous locations on the property. Im
         </div>
 
         <div class="card" id="card-119" data-idx="119" data-property-id="2018673055">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/75q9WtkTl46KdP6TlalFc4TJpi8=/660x440/filters:format(jpeg):quality(80)/2018673055_1_1_230728_063214-w2000-h1500" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/75q9WtkTl46KdP6TlalFc4TJpi8=/660x440/filters:format(jpeg):quality(80)/2018673055_1_1_230728_063214-w2000-h1500" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9030,7 +9041,7 @@ Offering views to the west and south from numerous locations on the property. Im
         </div>
 
         <div class="card" id="card-120" data-idx="120" data-property-id="2020598868">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/FAU1SgZnlahBux2UojdipX6IeMk=/660x440/filters:format(jpeg):quality(80)/2020598868_1_1_260211_113141-w1600-h1067" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/FAU1SgZnlahBux2UojdipX6IeMk=/660x440/filters:format(jpeg):quality(80)/2020598868_1_1_260211_113141-w1600-h1067" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9102,7 +9113,7 @@ With its stunning &quot;intact stained-glass windows, deco...</div>
         </div>
 
         <div class="card" id="card-121" data-idx="121" data-property-id="2019979548">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/DSJgHPEbpLNcuxds1kiHv8tYCJA=/660x440/filters:format(jpeg):quality(80)/2019979548_3_1_250508_015940-w3200-h2400" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/DSJgHPEbpLNcuxds1kiHv8tYCJA=/660x440/filters:format(jpeg):quality(80)/2019979548_3_1_250508_015940-w3200-h2400" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9174,7 +9185,7 @@ Offering absolute privacy this stunning property includes a combination of clear
         </div>
 
         <div class="card" id="card-122" data-idx="122" data-property-id="2020613943">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/UmiwXABuNQILYsGP3BzFml6nDx0=/660x440/filters:format(jpeg):quality(80)/2020613943_1_1_260217_113735-w3000-h2247" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/UmiwXABuNQILYsGP3BzFml6nDx0=/660x440/filters:format(jpeg):quality(80)/2020613943_1_1_260217_113735-w3000-h2247" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9246,7 +9257,7 @@ Tucked away in a peaceful natural setting, the property features a council-appro
         </div>
 
         <div class="card" id="card-123" data-idx="123" data-property-id="2019838536">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0rWiezGTgRsqs9cXMk4LHUkXeoA=/660x440/filters:format(jpeg):quality(80)/2019838536_22_1_250305_013859-w2048-h1534" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0rWiezGTgRsqs9cXMk4LHUkXeoA=/660x440/filters:format(jpeg):quality(80)/2019838536_22_1_250305_013859-w2048-h1534" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9325,7 +9336,7 @@ Features include:
         </div>
 
         <div class="card" id="card-124" data-idx="124" data-property-id="2020301755">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/V0sfP1jAgR0cAQ5Kkdg0hnWkcK4=/660x440/filters:format(jpeg):quality(80)/2020301755_2_1_250929_124015-w1600-h1067" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/V0sfP1jAgR0cAQ5Kkdg0hnWkcK4=/660x440/filters:format(jpeg):quality(80)/2020301755_2_1_250929_124015-w1600-h1067" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9398,7 +9409,7 @@ Main House: From the living room, elevated views to the east through a large bay
         </div>
 
         <div class="card" id="card-125" data-idx="125" data-property-id="2020544155">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/labc481mEw8eOW-9t_o2NbCkoQQ=/660x440/filters:format(jpeg):quality(80)/2020544155_3_1_260121_063946-w1920-h1280" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/labc481mEw8eOW-9t_o2NbCkoQQ=/660x440/filters:format(jpeg):quality(80)/2020544155_3_1_260121_063946-w1920-h1280" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9469,7 +9480,7 @@ Main House: From the living room, elevated views to the east through a large bay
         </div>
 
         <div class="card" id="card-126" data-idx="126" data-property-id="2019536211">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/r7AJsoFRszTkvFyWe05o2fgE7tI=/660x440/filters:format(jpeg):quality(80)/2019536211_1_1_241003_012157-w2000-h1498" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/r7AJsoFRszTkvFyWe05o2fgE7tI=/660x440/filters:format(jpeg):quality(80)/2019536211_1_1_241003_012157-w2000-h1498" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9545,7 +9556,7 @@ Features include
         </div>
 
         <div class="card" id="card-127" data-idx="127" data-property-id="2020356873">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/T4uOEJ7zUEbXqyjIyu99NNkfi6U=/660x440/filters:format(jpeg):quality(80)/3ts5gcca5mqli_1_0_251016_122529-w2000-h1500" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/T4uOEJ7zUEbXqyjIyu99NNkfi6U=/660x440/filters:format(jpeg):quality(80)/3ts5gcca5mqli_1_0_251016_122529-w2000-h1500" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9617,7 +9628,7 @@ This inviting single-level brick home showcases timeless character features thro
         </div>
 
         <div class="card" id="card-128" data-idx="128" data-property-id="2020614293">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6YWW3XMrnixfBRIpl77w5MMQ-XA=/660x440/filters:format(jpeg):quality(80)/2020614293_1_1_260218_125113-w5472-h3648" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6YWW3XMrnixfBRIpl77w5MMQ-XA=/660x440/filters:format(jpeg):quality(80)/2020614293_1_1_260218_125113-w5472-h3648" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9693,7 +9704,7 @@ This inviting single-level brick home showcases timeless character features thro
         </div>
 
         <div class="card" id="card-129" data-idx="129" data-property-id="2020448452">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/XpLyoKdMqBJl9bZURpfTVZ3p6vM=/660x440/filters:format(jpeg):quality(80)/2020448452_3_1_251125_034753-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/XpLyoKdMqBJl9bZURpfTVZ3p6vM=/660x440/filters:format(jpeg):quality(80)/2020448452_3_1_251125_034753-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9765,7 +9776,7 @@ A substantial dam and quality shedding support a wide range of leisure pursuits,
         </div>
 
         <div class="card" id="card-130" data-idx="130" data-property-id="2019650348">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PcaE7PFUyNFM5_4HNzFUgAHqXUk=/660x440/filters:format(jpeg):quality(80)/2019221920_1_1_240503_055033-w2481-h3508" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/PcaE7PFUyNFM5_4HNzFUgAHqXUk=/660x440/filters:format(jpeg):quality(80)/2019221920_1_1_240503_055033-w2481-h3508" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9837,7 +9848,7 @@ Imagine waking up to breathtaking views that stretch across the Goulburn region.
         </div>
 
         <div class="card" id="card-131" data-idx="131" data-property-id="2020409894">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/nVtLi4LaLHQGCaQvxURPMklCQbI=/660x440/filters:format(jpeg):quality(80)/2020409894_1_1_251110_033756-w1920-h919" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/nVtLi4LaLHQGCaQvxURPMklCQbI=/660x440/filters:format(jpeg):quality(80)/2020409894_1_1_251110_033756-w1920-h919" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9912,7 +9923,7 @@ Develop the next stage of Clifton Grove Estate into sought after lifestyle block
         </div>
 
         <div class="card" id="card-132" data-idx="132" data-property-id="2019034346">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/JUEwrhEADCfbKTuBkO26z64yPi4=/660x440/filters:format(jpeg):quality(80)/2019034346_1_1_240916_074516-w1242-h2208" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/JUEwrhEADCfbKTuBkO26z64yPi4=/660x440/filters:format(jpeg):quality(80)/2019034346_1_1_240916_074516-w1242-h2208" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -9987,7 +9998,7 @@ Whilst every care has been taken to veri...</div>
         </div>
 
         <div class="card" id="card-133" data-idx="133" data-property-id="2019598529">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3K5mS9rQCorKqc6XsvEzvE8HlmQ=/660x440/filters:format(jpeg):quality(80)/2019598529_1_1_241029_110258-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/3K5mS9rQCorKqc6XsvEzvE8HlmQ=/660x440/filters:format(jpeg):quality(80)/2019598529_1_1_241029_110258-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10064,7 +10075,7 @@ Features include:
         </div>
 
         <div class="card" id="card-134" data-idx="134" data-property-id="2019528729">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/S6QMBoJq-leq7PP9-q2GppsUtV0=/660x440/filters:format(jpeg):quality(80)/2019528729_1_1_250617_061310-w4032-h3024" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/S6QMBoJq-leq7PP9-q2GppsUtV0=/660x440/filters:format(jpeg):quality(80)/2019528729_1_1_250617_061310-w4032-h3024" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10136,7 +10147,7 @@ Set across 153 picturesque acres, this expansive country...</div>
         </div>
 
         <div class="card" id="card-135" data-idx="135" data-property-id="2020662560">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/4SIXKbIBdVR7bu6w_ugLV7Zi8jE=/660x440/filters:format(jpeg):quality(80)/2020662560_2_1_260306_062523-w2808-h1872" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/4SIXKbIBdVR7bu6w_ugLV7Zi8jE=/660x440/filters:format(jpeg):quality(80)/2020662560_2_1_260306_062523-w2808-h1872" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10209,7 +10220,7 @@ The comfortable three-bedroom home features warm timbre floorboards and a we...<
         </div>
 
         <div class="card" id="card-136" data-idx="136" data-property-id="2018937748">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0rzOndJcpMT-7hrJ2TXjYWJvIfo=/660x440/filters:format(jpeg):quality(80)/2018937748_1_1_251030_100824-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/0rzOndJcpMT-7hrJ2TXjYWJvIfo=/660x440/filters:format(jpeg):quality(80)/2018937748_1_1_251030_100824-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10286,7 +10297,7 @@ The comfortable three-bedroom home features warm timbre floorboards and a we...<
         </div>
 
         <div class="card" id="card-137" data-idx="137" data-property-id="2019845266">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/T2_PehDBqN3Ts3Vz9hNMjKKASgU=/660x440/filters:format(jpeg):quality(80)/2019845266_1_1_250307_054612-w5272-h3515" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/T2_PehDBqN3Ts3Vz9hNMjKKASgU=/660x440/filters:format(jpeg):quality(80)/2019845266_1_1_250307_054612-w5272-h3515" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10357,7 +10368,7 @@ The comfortable three-bedroom home features warm timbre floorboards and a we...<
         </div>
 
         <div class="card" id="card-138" data-idx="138" data-property-id="2020585454">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/YuZZCq7cXjqIxCS9CITNCJhR1x4=/660x440/filters:format(jpeg):quality(80)/2020585454_1_1_260206_023436-w2500-h1667" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/YuZZCq7cXjqIxCS9CITNCJhR1x4=/660x440/filters:format(jpeg):quality(80)/2020585454_1_1_260206_023436-w2500-h1667" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10429,7 +10440,7 @@ Conveniently located just 30 minutes from Goulburn and only 10 minutes from Tara
         </div>
 
         <div class="card" id="card-139" data-idx="139" data-property-id="2020464022">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6vSl8LggxIzJ7_GNQx-DRx2qI7o=/660x440/filters:format(jpeg):quality(80)/2020464022_1_1_251202_052728-w1200-h900" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/6vSl8LggxIzJ7_GNQx-DRx2qI7o=/660x440/filters:format(jpeg):quality(80)/2020464022_1_1_251202_052728-w1200-h900" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10500,7 +10511,7 @@ Conveniently located just 30 minutes from Goulburn and only 10 minutes from Tara
         </div>
 
         <div class="card" id="card-140" data-idx="140" data-property-id="2019907491">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/X9UEw2nzFfVnPCmxzjdpFJmyu2E=/660x440/filters:format(jpeg):quality(80)/2019795358_1_1_250214_044338-w4000-h2250" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/X9UEw2nzFfVnPCmxzjdpFJmyu2E=/660x440/filters:format(jpeg):quality(80)/2019795358_1_1_250214_044338-w4000-h2250" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10573,7 +10584,7 @@ Designed as the ultimate escape with 4 self-contained pods and the master pod be
         </div>
 
         <div class="card" id="card-141" data-idx="141" data-property-id="2019414983">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/YocgZkr4h6ItIgWZJwQ3grYw3bI=/660x440/filters:format(jpeg):quality(80)/2019414983_1_1_250520_030724-w1920-h1280" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/YocgZkr4h6ItIgWZJwQ3grYw3bI=/660x440/filters:format(jpeg):quality(80)/2019414983_1_1_250520_030724-w1920-h1280" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10645,7 +10656,7 @@ C...</div>
         </div>
 
         <div class="card" id="card-142" data-idx="142" data-property-id="2020206955">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/umWDp6KhEqYbjC1aL31hl8AnPHg=/660x440/filters:format(jpeg):quality(80)/2020206955_1_1_250819_042057-w2048-h1366" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/umWDp6KhEqYbjC1aL31hl8AnPHg=/660x440/filters:format(jpeg):quality(80)/2020206955_1_1_250819_042057-w2048-h1366" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10719,7 +10730,7 @@ Features we like
         </div>
 
         <div class="card" id="card-143" data-idx="143" data-property-id="2020292865">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/m_epsUf051mYi-wgPyjoW4N11kE=/660x440/filters:format(jpeg):quality(80)/2020292865_1_1_250924_045627-w1600-h900" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/m_epsUf051mYi-wgPyjoW4N11kE=/660x440/filters:format(jpeg):quality(80)/2020292865_1_1_250924_045627-w1600-h900" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10791,7 +10802,7 @@ PRD Real Estate is excited to introduce the &quot;Mayfield Estate&quot; subdivis
         </div>
 
         <div class="card" id="card-144" data-idx="144" data-property-id="2020330083">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/kbL1nZSbcTMKbxnfLxu6WM8krGw=/660x440/filters:format(jpeg):quality(80)/2020330083_1_1_251009_022046-w2048-h1365" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/kbL1nZSbcTMKbxnfLxu6WM8krGw=/660x440/filters:format(jpeg):quality(80)/2020330083_1_1_251009_022046-w2048-h1365" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10869,7 +10880,7 @@ Features include:
         </div>
 
         <div class="card" id="card-145" data-idx="145" data-property-id="str-4822411">
-            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4822411/images/Downloaded-original6_cd28-aa45-bae9-5b5b-6b5e-6bd5-21b8-923e_20251202043020.jpg" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4822411/images/Downloaded-original6_cd28-aa45-bae9-5b5b-6b5e-6bd5-21b8-923e_20251202043020.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -10940,7 +10951,7 @@ Features include:
         </div>
 
         <div class="card" id="card-146" data-idx="146" data-property-id="str-4763098">
-            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4763098/images/21-gumnut-crescent-B_4f0d-9f5c-5317-49f2-7e45-cbdf-8179-91a7_20251208045726.jpg" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4763098/images/21-gumnut-crescent-B_4f0d-9f5c-5317-49f2-7e45-cbdf-8179-91a7_20251208045726.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11011,7 +11022,7 @@ Features include:
         </div>
 
         <div class="card" id="card-147" data-idx="147" data-property-id="str-4712447">
-            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4712447/images/1a_e40e-39c5-b820-4b9b-1376-c2e2-f32b-c565_20251018034929.jpg" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4712447/images/1a_e40e-39c5-b820-4b9b-1376-c2e2-f32b-c565_20251018034929.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11082,7 +11093,7 @@ Features include:
         </div>
 
         <div class="card" id="card-148" data-idx="148" data-property-id="elders-L37718336">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L37718336/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L37718336/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11153,7 +11164,7 @@ Features include:
         </div>
 
         <div class="card" id="card-149" data-idx="149" data-property-id="elders-300P38900">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P38900/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P38900/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11224,7 +11235,7 @@ Features include:
         </div>
 
         <div class="card" id="card-150" data-idx="150" data-property-id="elders-300P130769">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P130769/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P130769/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11295,7 +11306,7 @@ Features include:
         </div>
 
         <div class="card" id="card-151" data-idx="151" data-property-id="2019884953">
-            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/jMUWO2_wfGEBRLOgJKn8H1aBNAA=/660x440/filters:format(jpeg):quality(80)/2019884953_1_1_250325_022133-w4096-h2729" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://rimh2.domainstatic.com.au/jMUWO2_wfGEBRLOgJKn8H1aBNAA=/660x440/filters:format(jpeg):quality(80)/2019884953_1_1_250325_022133-w4096-h2729" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11368,7 +11379,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-152" data-idx="152" data-property-id="elders-300P183947">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P183947/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P183947/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11439,7 +11450,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-153" data-idx="153" data-property-id="str-4842574">
-            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4842574/images/32-hush-road-house-p_7577-03b0-9595-305c-43bd-7eaf-7c7e-677d_20251219021349.jpg" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4842574/images/32-hush-road-house-p_7577-03b0-9595-305c-43bd-7eaf-7c7e-677d_20251219021349.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11510,7 +11521,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-154" data-idx="154" data-property-id="elders-L23138850">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L23138850/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L23138850/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11581,7 +11592,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-155" data-idx="155" data-property-id="str-4939118">
-            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4939118/images/8422-nerriga-road-fo_119d-893a-bfca-10de-c636-ec70-a3ce-54e9_20260225124817.jpg" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4939118/images/8422-nerriga-road-fo_119d-893a-bfca-10de-c636-ec70-a3ce-54e9_20260225124817.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11652,7 +11663,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-156" data-idx="156" data-property-id="elders-300P190699">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P190699/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P190699/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11723,7 +11734,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-157" data-idx="157" data-property-id="str-4844279">
-            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4844279/images/494-jerralong-bounda_d614-4ecb-07f4-08e5-88be-bbb3-07cd-0cec_20251223013001.jpg" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://au-crm.cdns.rexsoftware.com/app/livestore/accounts/4703/listings/4844279/images/494-jerralong-bounda_d614-4ecb-07f4-08e5-88be-bbb3-07cd-0cec_20251223013001.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11794,7 +11805,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-158" data-idx="158" data-property-id="elders-L39141281">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L39141281/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L39141281/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11865,7 +11876,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-159" data-idx="159" data-property-id="elders-L19375939">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L19375939/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L19375939/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -11936,7 +11947,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-160" data-idx="160" data-property-id="elders-300P187142">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P187142/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/300P187142/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -12007,7 +12018,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-161" data-idx="161" data-property-id="elders-L31035785">
-            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L31035785/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://elders-re-vre-cdn.imgix.net/L31035785/image-1.jpg?w=660&amp;h=440&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -12078,7 +12089,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         </div>
 
         <div class="card" id="card-162" data-idx="162" data-property-id="382175">
-            <div class="card-photo"><img src="https://farmbuycdn.clodflare.pushcreative.com.au/382175/512_382175p-86vz-9auxb2emxm8scs4w.jpg" alt="" loading="lazy" /></div>
+            <div class="card-photo"><img src="https://farmbuycdn.clodflare.pushcreative.com.au/382175/512_382175p-86vz-9auxb2emxm8scs4w.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>
             <div class="card-body">
                 <div class="card-top-row">
                     <div class="card-header">
@@ -12126,7 +12137,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
                 </div>
                 <div class="headline"></div>
                 <div class="address">216 Eldridges Lane, Taylors Flat NSW 2586</div>
-                <div class="stats"><span class="stat">100 acres</span> <span class="stat">6.0 bed / 2.0 bath</span> <span class="stat-badge" style="color:#166534;background:#dcfce7;">Good Value &middot; $6,850/ac</span></div>
+                <div class="stats"><span class="stat">100 acres</span> <span class="stat">6 bed / 2 bath</span> <span class="stat-badge" style="color:#166534;background:#dcfce7;">Good Value &middot; $6,850/ac</span></div>
                 <div class="description"></div>
                 
                 <div class="actions">
@@ -12156,7 +12167,7 @@ Discover a piece of history with this expansive 33.6-acre property located in th
     </div>
 
     <!-- Progress bar -->
-    <div class="progress-bar hidden" id="progress-bar">
+    <div class="progress-bar" id="progress-bar">
         <span class="progress-text" id="progress-text">Reviewed 0 of 163</span>
         <div class="progress-track">
             <div class="progress-fill" id="progress-fill" style="width:0%"></div>
@@ -12174,13 +12185,13 @@ Discover a piece of history with this expansive 33.6-acre property located in th
         favCount: 0,
     };
 
-    // ── Persist to sessionStorage so scroll-back shows state ──────────
+    // ── Persist to localStorage so scroll-back shows state ──────────
     function saveState() {
-        try { sessionStorage.setItem('blh_state', JSON.stringify(state)); } catch(e) {}
+        try { localStorage.setItem('blh_state', JSON.stringify(state)); } catch(e) {}
     }
     function loadState() {
         try {
-            const s = sessionStorage.getItem('blh_state');
+            const s = localStorage.getItem('blh_state');
             if (s) {
                 const saved = JSON.parse(s);
                 Object.assign(state, saved);
@@ -12407,9 +12418,10 @@ Discover a piece of history with this expansive 33.6-acre property located in th
             });
 
             const marker = L.marker([m.lat, m.lng], { icon: icon }).addTo(map);
+            const esc = s => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
             marker.bindPopup(
-                '<strong>' + m.suburb + '</strong><br>' +
-                m.price + (m.acres ? ' &middot; ' + m.acres : '') +
+                '<strong>' + esc(m.suburb) + '</strong><br>' +
+                esc(m.price) + (m.acres ? ' &middot; ' + esc(m.acres) : '') +
                 ' &middot; ' + m.pct.toFixed(0) + '%<br>' +
                 '<a class="popup-link" onclick="scrollToCard(' + m.idx + ')">Jump to card &darr;</a>'
             );
@@ -12446,6 +12458,19 @@ Discover a piece of history with this expansive 33.6-acre property located in th
             observer.observe(card);
         });
     }
+
+    // ── Flag stale listings (Deposit Taken, Under Offer, etc.) ──────
+    const stalePatterns = /deposit taken|under offer|under contract/i;
+    document.querySelectorAll('.card').forEach(card => {
+        const priceEl = card.querySelector('.price');
+        if (priceEl && stalePatterns.test(priceEl.textContent)) {
+            card.classList.add('stale');
+            const banner = document.createElement('div');
+            banner.className = 'stale-banner';
+            banner.textContent = priceEl.textContent.trim() + ' — may no longer be available';
+            card.insertBefore(banner, card.firstChild);
+        }
+    });
 
     // ── Restore state on load ─────────────────────────────────────────
     loadState();

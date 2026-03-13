@@ -1,0 +1,179 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-03-13",
+  "source": "bolt-hole-working-brief.md + George & Mary weight update 13 Mar 2026",
+
+  "gates": {
+    "geography": {
+      "description": "Must be in one of the target corridors",
+      "target_districts": {
+        "608": "Bathurst Regional",
+        "222": "Lithgow",
+        "123": "Oberon",
+        "620": "Mid Western Regional",
+        "102": "Wingecarribee",
+        "226": "Wollondilly",
+        "529": "Goulburn Mulwaree",
+        "526": "Upper Lachlan",
+        "266": "Hilltops",
+        "272": "Queanbeyan-Palerang",
+        "273": "Snowy Monaro Regional",
+        "528": "Yass Valley",
+        "124": "Orange",
+        "118": "Blayney",
+        "101": "Shoalhaven (Berry/Kangaroo Valley)"
+      },
+      "postcodes_west": ["2787", "2790", "2791", "2795", "2798", "2799", "2800"],
+      "postcodes_south": ["2535", "2575", "2576", "2577", "2578", "2579", "2580", "2581", "2582", "2583", "2584", "2586", "2587", "2594", "2620", "2621", "2622", "2623", "2630", "2631"],
+      "postcodes_south_coast_note": "2535 = Berry/Jaspers Brush/Bellawongarah (Shoalhaven). 2577 = Kangaroo Valley (Shoalhaven). Added per George feedback 11 Mar 2026."
+    },
+
+    "budget": {
+      "description": "Maximum purchase price",
+      "max_price": 2000000,
+      "min_price": 100000,
+      "note": "Min excludes nominal/family transfers"
+    },
+
+    "land_size": {
+      "description": "30-200 acres",
+      "min_hectares": 12.14,
+      "max_hectares": 80.94,
+      "ideal_min_hectares": 40.47,
+      "note": "Ideally 100+ acres (40+ ha)"
+    },
+
+    "dwelling": {
+      "description": "Must have an existing house",
+      "required": true,
+      "nature_of_property": "R",
+      "note": "George: 'the house has to move into the must have column'. Not a palace — modest but liveable."
+    },
+
+    "zoning": {
+      "description": "Rural zoning only",
+      "accepted_zones": ["RU1", "RU2", "RU4"],
+      "consider_zones": ["RU6", "C3", "C4", "R5"],
+      "note": "RU1/RU2/RU4 are primary. RU6 (transition), C3 (environmental management), C4 (environmental living), R5 (large lot residential) may qualify but need case-by-case review."
+    },
+
+    "drive_time": {
+      "description": "Maximum drive time from Sydney",
+      "max_minutes": 240,
+      "origin": "Sydney CBD",
+      "note": "4 hours is the hard limit. George said Jugiong was 'on the limit'."
+    }
+  },
+
+  "scoring": {
+    "_note": "Weights updated 13 Mar 2026 per George & Mary feedback. Drive time doubled (10→20), carbon and convenience dropped to 0. Total = 100.",
+    "water": {
+      "weight": 25,
+      "description": "Permanent water — creek/river frontage, bore, dams"
+    },
+    "terrain": {
+      "weight": 20,
+      "description": "Undulating, hilly terrain with views"
+    },
+    "seclusion": {
+      "weight": 15,
+      "description": "Remote / secluded feel, end of road, no close neighbours"
+    },
+    "house_quality": {
+      "weight": 15,
+      "description": "Liveable dwelling, modest but functional"
+    },
+    "drive_time_bonus": {
+      "weight": 20,
+      "description": "Bonus for shorter drive — under 3.5 hours ideal"
+    },
+    "national_park_adjacent": {
+      "weight": 5,
+      "description": "Adjacent to or near National Park or State Forest"
+    },
+    "carbon_eligible": {
+      "weight": 0,
+      "description": "Dropped per George 13 Mar 2026 — not a factor"
+    },
+    "convenience": {
+      "weight": 0,
+      "description": "Dropped per George 13 Mar 2026 — not a factor"
+    }
+  },
+
+  "tags": {
+    "_note": "Observable features flagged on each property. Not scored — just visible. George's reactions to tagged properties inform future scoring adjustments.",
+    "available": [
+      "river_frontage",
+      "creek_frontage",
+      "dam",
+      "bore",
+      "hilltop_position",
+      "valley_floor",
+      "north_facing",
+      "views",
+      "end_of_road",
+      "sealed_road_access",
+      "backs_onto_bush",
+      "national_park_adjacent",
+      "state_forest_adjacent",
+      "existing_house",
+      "existing_shed",
+      "fruit_trees",
+      "established_gardens",
+      "old_growth_trees",
+      "cleared_pastoral",
+      "mixed_bush_and_cleared",
+      "mobile_reception",
+      "near_town",
+      "school_bus_route",
+      "carbon_eligible"
+    ]
+  },
+
+  "feedback": {
+    "_note": "George's reactions to surfaced properties. Each entry captures what he liked, disliked, or flagged. Over time this builds a preference profile that sharpens the search.",
+    "entries": [
+      {
+        "date": "2026-03-10",
+        "property": "Jugiong reference (not a specific listing)",
+        "reaction": "positive",
+        "liked": ["river_frontage", "hilltop_position", "end_of_road", "existing_house"],
+        "disliked": [],
+        "comment": "Closest visual match to brief. River front, hilly, out of the way, house but not a palace. All spot on. Issue was drive time at limit."
+      },
+      {
+        "date": "2026-03-11",
+        "property": "General feedback (email from China)",
+        "reaction": "positive",
+        "liked": [],
+        "disliked": [],
+        "comment": "Rated brief 9/10. Requested adding Berry/Kangaroo Valley area. Wants rural agents (Elders etc) who may not list on Domain. 'Looks fantastic, really impressed.'"
+      }
+    ]
+  },
+
+  "consider_and_mitigate": {
+    "bushfire": {
+      "description": "Assess BFPL category. Prefer mitigatable, not extreme.",
+      "action": "Overlay BFPL data on shortlisted properties"
+    },
+    "flood": {
+      "description": "Assess flood risk. Prefer mitigatable.",
+      "action": "Check flood mapping for shortlisted properties"
+    }
+  },
+
+  "reference_property": {
+    "description": "Jugiong property — closest visual match to brief",
+    "lga": "Hilltops",
+    "district_code": "266",
+    "postcode": "2726",
+    "river": "Murrumbidgee",
+    "attributes": ["river_frontage", "hilltop_position", "end_of_road", "existing_house"],
+    "price": 1000000,
+    "drive_time_minutes": 230,
+    "issue": "4 hours from Sydney — at the drive time limit",
+    "note": "George said 'probably both' — 4hrs is the ceiling AND the property itself needed to justify the drive. But the property was 'all spot on'."
+  }
+}

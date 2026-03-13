@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolt Hole — Top 10 Shortlist</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --bg: #f5f0e8;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --accent: #1e293b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+
+.header { text-align: center; margin-bottom: 24px; }
+.header-brand { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; color: var(--text-muted); text-transform: uppercase; }
+.header-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); margin-top: 4px; }
+.header-sub { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+.context-box { background: var(--card); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+.context-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.context-body { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.weight-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.weight-chip { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 500; }
+.context-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+#map { height: 300px; border-radius: 10px; margin-bottom: 20px; }
+
+.card { background: var(--card); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; transition: box-shadow 0.2s; }
+.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.card.highlight { box-shadow: 0 0 0 3px #3b82f6, 0 4px 12px rgba(0,0,0,0.12); }
+
+.card-media { position: relative; }
+.card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.card-img-placeholder { width: 100%; height: 200px; background: var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
+.card-rank { position: absolute; top: 12px; left: 12px; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; padding: 4px 12px; border-radius: 6px; }
+.card-score { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95); color: var(--text); font-weight: 700; font-size: 18px; padding: 4px 12px; border-radius: 6px; backdrop-filter: blur(4px); }
+
+.card-body { padding: 16px; }
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+.card-suburb { font-size: 18px; font-weight: 700; color: var(--text); }
+.card-headline { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+.badge { font-size: 11px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; font-weight: 500; }
+.badge-up { background: #dcfce7; color: #166534; }
+.badge-down { background: #fee2e2; color: #991b1b; }
+.badge-same { background: #f1f5f9; color: #64748b; }
+
+.card-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+.stat { text-align: center; }
+.stat-val { font-size: 14px; font-weight: 600; color: var(--text); }
+.stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.score-bar { background: #f1f5f9; border-radius: 6px; height: 8px; overflow: hidden; display: flex; margin-bottom: 6px; }
+.bar-seg { height: 100%; transition: width 0.5s ease; }
+
+.legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.legend-item { font-size: 10px; color: var(--text-secondary); display: flex; align-items: center; gap: 3px; }
+.legend-dot { width: 7px; height: 7px; border-radius: 2px; display: inline-block; }
+
+.card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+.expand-btn { background: none; border: none; color: #3b82f6; font-size: 12px; cursor: pointer; padding: 0; font-weight: 500; }
+.expand-btn:hover { text-decoration: underline; }
+
+.card-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; }
+.tag { background: #f1f5f9; color: var(--text-secondary); font-size: 10px; padding: 2px 8px; border-radius: 4px; }
+
+.card-link { display: inline-block; background: var(--accent); color: #fff; padding: 8px 20px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; transition: opacity 0.2s; }
+.card-link:hover { opacity: 0.85; }
+
+.footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 24px; padding: 16px 0; }
+
+@media (max-width: 480px) {
+    .card-stats { grid-template-columns: repeat(2, 1fr); }
+    .header-title { font-size: 24px; }
+    .card-img { height: 160px; }
+    #map { height: 220px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <div class="header-brand">Reforged</div>
+        <div class="header-title">Bolt Hole — Top 10</div>
+        <div class="header-sub">13 March 2026 — George & Mary's weights applied</div>
+    </div>
+
+    <div class="context-box">
+        <div class="context-title">What changed</div>
+        <div class="context-body">
+            You and Mary reviewed the scoring weights. Drive time <strong>doubled</strong> from 10 to 20 points — 
+            closer properties now score significantly higher. Carbon credits and convenience 
+            <strong>dropped to zero</strong>.
+        </div>
+        <div class="weight-chips">
+            <span class="weight-chip" style="background:#dbeafe;color:#1e40af;">Water 25</span>
+            <span class="weight-chip" style="background:#ede9fe;color:#6d28d9;">Terrain 20</span>
+            <span class="weight-chip" style="background:#d1fae5;color:#065f46;">Seclusion 15</span>
+            <span class="weight-chip" style="background:#fef3c7;color:#92400e;">House 15</span>
+            <span class="weight-chip" style="background:#fee2e2;color:#991b1b;font-weight:600;">Drive Time 20 &#9650;</span>
+            <span class="weight-chip" style="background:#f1f5f9;color:#475569;">Park 5</span>
+        </div>
+        <div class="context-note">
+            Impact: Braidwood properties (3.5-4hr drive) dropped 25-30 places. 
+            Closer spots like Lidsdale (2.7hrs), Bullio (2.2hrs), and Windellama (2.7hrs) rose sharply.
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    
+    <div class="card" id="card-1" data-lat="-33.320293" data-lng="150.112">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/pPcGX9gjSDvJ21DSol7SywEuJ_Y=/660x440/filters:format(jpeg):quality(80)/2020418267_1_1_251112_070156-w2048-h1365" alt="LIDSDALE" loading="lazy" class="card-img">
+            <div class="card-rank">#1</div>
+            <div class="card-score">85%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">LIDSDALE</div>
+                    <div class="card-headline">"Wolgan View" - A Private Natural Bush Retreat</div>
+                </div>
+                <span class="badge badge-up">&#9650; 6 from #7</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">$990,000</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">60 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">2h 43m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">3/2</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:12.5%;background:#3b82f6;" title="Water: 12/25"></div><div class="bar-seg" style="width:20.0%;background:#8b5cf6;" title="Terrain: 20/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:20%;background:#dc2626;" title="Drive: 20/20"></div><div class="bar-seg" style="width:2.5%;background:#6b7280;" title="Park: 2/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 12/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 20/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 20/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#6b7280"></span>Park 2/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">A spacious, modern family home situated on 60 versatile acres at the gateway to the beautiful Wolgan Valley.
+The home features 4 bedrooms, modern ensuite, main bathroom and open plan kitchen, dining a...</span><span class="desc-full" style="display:none">nd living room. There is a log fire and split system A/C and an attached covered outdoor entertainment area.
+The 180 sqm, 6 car garage and workshop as attached carport offers plenty of storage and car accommodation. The property has a new effluent system and ample rainwater tanks.
+The block offers a dual road frontage and great mix of flat and undulating land for trail bike riding or camping and some natural native bushland with rock formations and a network of thoughtful walking or riding trails around the property. 
+The real bonus is your very own private and elevated camp site looking right into the Wolgan Valley and the surrounding escarpments.
+The ultimate privacy, abundant native flora and fauna, no neighbours and boundaries onto public reserve an National Park make this a truly special one of a kind acreage property.</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">valley floor</span> <span class="tag">views</span> <span class="tag">national park adjacent</span> <span class="tag">existing house</span></div>
+            
+            <a href="https://www.domain.com.au/866-wolgan-road-lidsdale-nsw-2790-2020418267" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-2" data-lat="-34.969357" data-lng="149.92012">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/t4d6sfpA2pyKVP2--9lq7TnqEfY=/660x440/filters:format(jpeg):quality(80)/2020274325_1_1_250916_114925-w1200-h900" alt="WINDELLAMA" loading="lazy" class="card-img">
+            <div class="card-rank">#2</div>
+            <div class="card-score">85%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">WINDELLAMA</div>
+                    <div class="card-headline">Secluded, Rustic Lifestyle on 100 acres!!!</div>
+                </div>
+                <span class="badge badge-up">&#9650; 1 from #3</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">$1,190,000</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">101 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">2h 41m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">4/2</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:25.0%;background:#3b82f6;" title="Water: 25/25"></div><div class="bar-seg" style="width:10.0%;background:#8b5cf6;" title="Terrain: 10/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:20%;background:#dc2626;" title="Drive: 20/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 25/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 10/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 20/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">Looking to escape city life and live amongst the gum trees? 
+This private retreat could be just what you've been searching for.
+Yes, the home could do with some upkeep and general modernisation if tha...</span><span class="desc-full" style="display:none">t's your style or simply embrace its rustic charm and make a few minor touch-ups to create a space that's truly your own.
+What You'll Love
+- Rawson built brick home, set amid 100 acres 50% grazing, 50% bush
+- Front porch with generous courtyard area for those morning coffees
+- Expansive, oversized lounge room with ambient slow combustion wood fire heating
+- Dedicated light filled dining area framing & embracing the natural bushland outlook
+- Well-presented kitchen with generous prepping space & breakfast bar
+- Four generously sized bedrooms all with built-in robes
+- Master suite has a private ensuite with an oversized walk in shower
+- A second spacious family bathroom with soaking corner bath sets the tone for relaxation 
+- Ceiling fans perfectly positioned throughout the home to embrace the natural cooling elements of nature
+Infrastructure & Extras
+Potential to convert the existing powered workshop/man cave into a Granny Flat with power, a fireplace, minor plumbing and original outbuilding nearby
+17x12m powered machinery shed with a secure garage space and still room for up to 10 vehicles/tractors
+Two paddocks with stock yard and loading ramp
+Chicken coop and woodshed
+15,000-gallon water tank capacity 
+Plus additionally 2 dams and a seasonal creek with waterholes
+A unique opportunity to embrace a peaceful rural lifestyle with space, privacy and scope to make it your own is now on offer all just 20 minutes from Marulan and 30 minutes from Goulburn.
+So, if you're looking for privacy, seclusion and options, then Call Now to book your Private Viewing!
+Disclaimer: "All information contained herein is gathered from sources we deem to be reliable. However, we cannot guarantee its accuracy and interested persons should rely on their own enquiries".</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">creek frontage</span> <span class="tag">dam</span> <span class="tag">views</span> <span class="tag">existing house</span> <span class="tag">existing shed</span> <span class="tag">cleared pastoral</span></div>
+            
+            <a href="https://www.domain.com.au/146-yarralaw-road-windellama-nsw-2580-2020274325" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-3" data-lat="-35.015343" data-lng="149.84944">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/eiQfpunLrZ20YgJl7HNernNd0hM=/660x440/filters:format(jpeg):quality(80)/2020317550_1_1_251003_053751-w3000-h2247" alt="WINDELLAMA" loading="lazy" class="card-img">
+            <div class="card-rank">#3</div>
+            <div class="card-score">85%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">WINDELLAMA</div>
+                    <div class="card-headline">Charming "Elouera Cottage"</div>
+                </div>
+                <span class="badge badge-up">&#9650; 1 from #4</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">Deposit Taken</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">100 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">2h 49m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">—/—</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:25.0%;background:#3b82f6;" title="Water: 25/25"></div><div class="bar-seg" style="width:10.0%;background:#8b5cf6;" title="Terrain: 10/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:20%;background:#dc2626;" title="Drive: 20/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 25/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 10/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 20/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">Discover the pleasures of semi-rural living at "Elouera Cottage," a charming lifestyle property set on a spacious corner lot with scenic countryside views, a peaceful creek, and pine-lined fences. Thi...</span><span class="desc-full" style="display:none">s idyllic home offers the perfect blend of comfort and rural tranquillity.
+The mainstay, is a charming 3-bedroom country-style farmhouse awaitig you, replete with a charming rose garden and a private porch that is shaded.
+The guest cottage, is a beautiful 1-bedroom cottage boosting a balcony with breathtaking views and a fireplace is available for visitors or possible rental revenue.
+- There are many cabins and extra sleep-out spaces.
+- Huge storage, entertainment, and rustic mechanical sheds.
+- A permanent creek frontage and dotted dams provide excellent permanent water.
+- Good grassland, stunning shade pine paddocks, and stock-proof fence.
+- Location to Sydney 2 hours, Canberra 1 and half hours, Goulburn 30 minutes and 5 mins from Windellama Public School
+- An excellent investment in real estate, a weekend getaway, or a productive county home.
+Inspections by Private Appointment - please contact exclusive agents</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">creek frontage</span> <span class="tag">dam</span> <span class="tag">views</span> <span class="tag">existing house</span> <span class="tag">established gardens</span></div>
+            
+            <a href="https://www.domain.com.au/22-elouera-road-windellama-nsw-2580-2020317550" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-4" data-lat="-34.407658" data-lng="149.60205">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/ARGAPlp9s9g9VDnUJV3yc0jHJOg=/660x440/filters:format(jpeg):quality(80)/2020421794_1_1_251113_044730-w2500-h1667" alt="CROOKWELL" loading="lazy" class="card-img">
+            <div class="card-rank">#4</div>
+            <div class="card-score">84%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">CROOKWELL</div>
+                    <div class="card-headline">A Lifestyle Escape on 30 Acres</div>
+                </div>
+                <span class="badge badge-up">&#9650; 1 from #5</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">$950,000</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">30 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">3h 19m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">2/1</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:20.0%;background:#3b82f6;" title="Water: 20/25"></div><div class="bar-seg" style="width:20.0%;background:#8b5cf6;" title="Terrain: 20/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:14.0%;background:#dc2626;" title="Drive: 14/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 20/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 20/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 14/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">Perfectly positioned just 3km from Laggan and 10km from Crookwell, this beautifully presented 30-acre property offers the best of country living - with space to breathe, productive land, and sweeping ...</span><span class="desc-full" style="display:none">views that stretch to the north-east.
+This comfortable two bedroom home is ideal as a weekend retreat or permanent residence, featuring built-in wardrobes, open-plan living and dining, and an additional living space for flexibility. The kitchen provides excellent storage, gas cooking, and a walk-in pantry, while the large main bathroom and separate powder room add practicality for everyday living.
+Outside, a generous porch captures the tranquil outlook across gently rolling, cleared, and pastured land - from flat contours to soft rises, creating a peaceful rural setting. The block is well set up with mature boundary trees, new tree lines with stock-proof fencing, and a newly fenced house paddock offering added security and structure for livestock or pets.
+The property includes a two car carport, a small utility yard, and a handy utility shed. Access is excellent, with a dedicated laneway leading to the home, complete with a parking and turning area for ease of movement. Water is a feature, with one spring-fed dam already in place and potential for three additional dam sites if desired.
+Offering peace, productivity, and proximity to town, 2522 Laggan Taralga Road delivers a genuine country lifestyle in a great location - all complemented by beautiful north-east views.</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">dam</span> <span class="tag">views</span> <span class="tag">existing house</span> <span class="tag">existing shed</span> <span class="tag">cleared pastoral</span></div>
+            
+            <a href="https://www.domain.com.au/2522-laggan-taralga-road-laggan-via-crookwell-nsw-2583-2020421794" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-5" data-lat="-35.12757" data-lng="149.94038">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/c0Yi3Jb66PwFe2Z5qwJAORMho5A=/660x440/filters:format(jpeg):quality(80)/2020481588_1_1_251210_103404-w1200-h800" alt="OALLEN" loading="lazy" class="card-img">
+            <div class="card-rank">#5</div>
+            <div class="card-score">83%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">OALLEN</div>
+                    <div class="card-headline">Private Playground in the Bush</div>
+                </div>
+                <span class="badge badge-up">&#9650; 7 from #12</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">$650,000</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">99 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">2h 59m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">—/—</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:20.0%;background:#3b82f6;" title="Water: 20/25"></div><div class="bar-seg" style="width:16.0%;background:#8b5cf6;" title="Terrain: 16/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:12.0%;background:#d97706;" title="House: 12/15"></div><div class="bar-seg" style="width:20%;background:#dc2626;" title="Drive: 20/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 20/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 16/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 12/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 20/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">For Sale: 1887 Oallen Ford Road, Oallen
+Price: $650,000
+Property Highlights:
+ Private bush block with undulating topography
+ Perfect for motorbike riding or simply unwinding in nature
+ Stunning views ...</span><span class="desc-full" style="display:none">to the south from a secluded camp spot at the rear of the property
+ Sealed road frontage for easy access
+ Close to the Shoalhaven River for swimming, canoeing, and outdoor adventures
+ Mostly boundary fenced
+ Dwelling entitlementideal for building your dream home
+ Walk-in, walk-out sale the property comes with a list of valuable inclusions (ask for details)
+Property Description:
+Escape to the serenity of nature with this charming bush block located on Oallen Ford Road. With its undulating topography, this property offers a unique landscape that's perfect for those who love outdoor pursuits, from motorbike riding to just relaxing amidst the trees. The private camp spot at the rear of the property offers southern views, making it an ideal location for evening gatherings or a peaceful retreat under the stars.
+The property enjoys sealed road frontage, ensuring easy access year-round. Its proximity to the Shoalhaven River means you'll be just minutes away from aquatic activities like swimming and canoeingperfect for weekend getaways or a more permanent rural lifestyle.
+With boundary fencing already in place and a dwelling entitlement, you have the option to build your dream home, start a hobby farm, or simply enjoy the property as-is. The property is being offered on a walk-in, walk-out basis, meaning you'll be ready to enjoy it immediately with a range of inclusions already on-site (ask for a list of items).
+Whether you're seeking a weekend retreat, a hobby block, or the perfect site for your future home, this is a fantastic opportunity to secure a slice of rural paradise.
+Call Michael Lees from Southern Tablelands Realty on 0409915491 to organise your private inspection.</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">river frontage</span> <span class="tag">views</span> <span class="tag">sealed road access</span></div>
+            
+            <a href="https://www.domain.com.au/1887-oallen-ford-road-oallen-nsw-2622-2020481588" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-6" data-lat="-34.339405" data-lng="150.12868">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/he0NAWsyrujX2_0k-qaEW0O7LUs=/660x440/filters:format(jpeg):quality(80)/2020298974_1_1_250926_022602-w2000-h1500" alt="BULLIO" loading="lazy" class="card-img">
+            <div class="card-rank">#6</div>
+            <div class="card-score">82%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">BULLIO</div>
+                    <div class="card-headline">Stunning Rural Escape on 100 Acres with Sweeping Views</div>
+                </div>
+                <span class="badge badge-up">&#9650; 2 from #8</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">$1,475,000</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">100 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">2h 14m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">4/1</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:12.5%;background:#3b82f6;" title="Water: 12/25"></div><div class="bar-seg" style="width:20.0%;background:#8b5cf6;" title="Terrain: 20/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:20%;background:#dc2626;" title="Drive: 20/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 12/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 20/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 20/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">Tucked away in a private and elevated setting, this absolute gem offers the ultimate rural hideaway on approximately 100 acres of predominantly cleared land, gardens, and open space. With a beautiful ...</span><span class="desc-full" style="display:none">mix of native and exotic plantings on a manicured 1-acre garden envelope, this well-loved property delivers peace, privacy, and breathtaking views.
+The cedar-clad residence, built approximately 35 years ago, exudes warmth and charm, offering a flexible layout perfect for families or those seeking a country retreat. With 4 comfortable bedrooms, a family bathroom, separate laundry with WC, and an open plan kitchen, living, and dining area, the home has been lovingly maintained and is ready to enjoy with scope to update and make it your own.
+Thoughtfully positioned to capture the northern sun, the home features a wide north-facing veranda, ideal for soaking up the stunning vistas and tranquil surrounds.
+Home Features:
+4 bedrooms | 1 bathroom | Separate WC
+Open plan kitchen, dining & living space
+Timber (cedar) construction, approx. 35 years old
+North-facing veranda with expansive views
+Separate laundry
+Lovingly maintained and full of potential
+Land & Infrastructure:
+Connected mains power
+Approx. 100 acres of undulating land
+One main dam with excellent catchment
+4-bay powered steel shed (2 bays enclosed ideal for storage, workshop or studio)
+1 acre of established gardens featuring native and exotic species
+This property is ideal for those seeking a tranquil rural lifestyle with the convenience of solid infrastructure and captivating views. Whether you're looking to run a small hobby farm, or simply enjoy nature at your doorstep, this property offers a rare opportunity to escape the hustle and immerse yourself in the serenity of the countryside.</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">dam</span> <span class="tag">views</span> <span class="tag">existing house</span> <span class="tag">existing shed</span> <span class="tag">established gardens</span> <span class="tag">cleared pastoral</span></div>
+            
+            <a href="https://www.domain.com.au/116-pheasant-gully-road-bullio-nsw-2575-2020298974" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-7" data-lat="-34.51101" data-lng="150.02887">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/sAwgOvPXNt_cTi-L-l-lJYjkGw8=/660x440/filters:format(jpeg):quality(80)/2020454098_1_1_251127_015155-w2000-h1500" alt="BIG HILL" loading="lazy" class="card-img">
+            <div class="card-rank">#7</div>
+            <div class="card-score">82%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">BIG HILL</div>
+                    <div class="card-headline">A Captivating Rural Estate Promising the Ultimate Country Lifestyle</div>
+                </div>
+                <span class="badge badge-up">&#9650; 2 from #9</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">UNDER OFFER</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">112 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">2h 38m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">5/2</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:20.0%;background:#3b82f6;" title="Water: 20/25"></div><div class="bar-seg" style="width:20.0%;background:#8b5cf6;" title="Terrain: 20/20"></div><div class="bar-seg" style="width:7.5%;background:#059669;" title="Seclusion: 8/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:20%;background:#dc2626;" title="Drive: 20/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 20/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 20/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 8/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 20/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">60 Macarthur Road, Big Hill
+Experience the true essence of country living at this exceptional five-bedroom double-brick estate, proudly positioned on 112 acres of pure serenity. Offering remarkable pe...</span><span class="desc-full" style="display:none">ace, privacy and sweeping rural panoramas, this expansive property delivers an enviable lifestyle in a setting of natural beauty.
+Designed to celebrate its surroundings, the sprawling residence features full-length windows and doors throughout, framing uninterrupted views from every room. Generous living spaces include a formal dining room, intimate sitting areas and a cosy lounge, all perfectly complemented by a charming country kitchen. Here, an oversized island provides the ideal gathering point for the family whether preparing hearty meals, enjoying casual breakfasts, or simply connecting over conversation. During the cooler months, the wood-burning fireplace invites you to unwind with a warm drink as the landscape unfolds outside.
+The formal entry and wide hallways introduce a sense of grandeur, while high 9-foot ceilings, decorative cornices and ducted zoned reverse-cycle heating and cooling create a refined rural comfort. All five bedrooms are well-proportioned, with the master suite offering a walk-in robe and private ensuite. Additional features include a modern bathroom, a spacious laundry, triple linen cupboards and a ducted vacuum system.
+Outdoor living is equally impressive, with a paved entertaining area positioned to capture breathtaking vistas, complemented by full-length wraparound verandas that embrace the home.
+Beyond the residence, the property is exceptionally well equipped for rural pursuits. Infrastructure includes:
+Double garage with automatic roller doors
+American barn-style farm shed with wood fire, sink and 5,000-gallon (22,700L) water tank
+Four storage containers (1×40ft, 3×20ft)
+Two large carports
+Four dams and three stock paddocks with cattle yards and ramp
+Orchard and large chook/dog run with dam-fed irrigation
+10,000 gallons (45,400L) of </span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">dam</span> <span class="tag">views</span> <span class="tag">existing house</span> <span class="tag">existing shed</span> <span class="tag">fruit trees</span></div>
+            
+            <a href="https://www.domain.com.au/60-macarthur-road-big-hill-nsw-2579-2020454098" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-8" data-lat="-34.617554" data-lng="150.08467">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/tXBJ5FhYJaD8u5RXbUI5X3nvwzY=/660x440/filters:format(jpeg):quality(80)/2017765079_11_1_220428_023939-w4002-h3000" alt="BRAYTON" loading="lazy" class="card-img">
+            <div class="card-rank">#8</div>
+            <div class="card-score">82%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">BRAYTON</div>
+                    <div class="card-headline">Elevated Estate with Breathtaking Panoramic Views</div>
+                </div>
+                <span class="badge badge-down">&#9660; 7 from #1</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">$1,650,000</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">100 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">2h 9m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">3/2</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:20.0%;background:#3b82f6;" title="Water: 20/25"></div><div class="bar-seg" style="width:20.0%;background:#8b5cf6;" title="Terrain: 20/20"></div><div class="bar-seg" style="width:7.5%;background:#059669;" title="Seclusion: 8/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:20%;background:#dc2626;" title="Drive: 20/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 20/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 20/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 8/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 20/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">Commanding the ridgeline with sweeping 360-degree views across the Southern Highlands, this exceptional rural holding represents a rare opportunity to secure approximately 40.47 Hectares of land with ...</span><span class="desc-full" style="display:none">and genuine lifestyle appeal. The property delivers the space, privacy, and natural beauty that defines authentic country living, anchored by a thoughtfully designed home that captures the magnificent landscapes.
+The central kitchen features an island bench and abundant storage, flowing seamlessly into the family dining area. Multiple living zones include a formal lounge and sunroom, warmed by two wood-burning fireplaces, while reverse-cycle air conditioning ensures year-round comfort. Sun-drenched living spaces open onto an expansive entertaining deck that overlooks the surrounding farmland, perfect for enjoying the breathtaking views. The internal laundry provides convenient access to the second bathroom.
+Three comfortable bedrooms include a master with ensuite and private deck access while two contemporary bathrooms and built in wardrobes a skylit covered alfresco area complete the picture of relaxed country comfort.
+The land is exceptionally well-resourced with five large dams, one being spring fed, complemented by two 35,000-litre rainwater tanks plus an additional tank for garden irrigation. A large machinery shed with workshop area and lockup storage provides ample space for equipment and tools. Outbuildings and fenced paddocks provide convenience. And the private driveway winds through the property.
+Canyonleigh village is located close to, Moss Vale (34km) and Goulburn (42km). School bus routes service the area for families seeking the benefits of a rural upbringing. Whether envisioning a weekend sanctuary, permanent tree-change, or productive agricultural enterprise.
+To make an offer please scan the QR Code at the end the image carousel.
+For more information or to arrange a private inspection, please contact Damien Ogilvy on 0423 548 147 damien@highlandspropert</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">dam</span> <span class="tag">views</span> <span class="tag">existing house</span> <span class="tag">existing shed</span> <span class="tag">established gardens</span></div>
+            
+            <a href="https://www.domain.com.au/1238-canyonleigh-road-brayton-nsw-2579-2020363906" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-9" data-lat="-35.12079" data-lng="149.5891">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/6lvhg7r76IsWhlwtuVlQ0bHwpME=/660x440/filters:format(jpeg):quality(80)/2020441371_1_1_251120_103655-w1600-h1067" alt="TARAGO" loading="lazy" class="card-img">
+            <div class="card-rank">#9</div>
+            <div class="card-score">82%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">TARAGO</div>
+                    <div class="card-headline">"LIVE THE DREAM" - STUNNING LIFESTYLE PROPERTY</div>
+                </div>
+                <span class="badge badge-down">&#9660; 7 from #2</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">$1,099,000</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">102 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">3h 8m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">—/—</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:25.0%;background:#3b82f6;" title="Water: 25/25"></div><div class="bar-seg" style="width:16.0%;background:#8b5cf6;" title="Terrain: 16/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:12.0%;background:#d97706;" title="House: 12/15"></div><div class="bar-seg" style="width:14.0%;background:#dc2626;" title="Drive: 14/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 25/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 16/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 12/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 14/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">Positioned along Bungendore Road between Bungendore and Tarago, this expansive 101.7* acre rural holding delivers the ideal blend of rural tranquility and everyday convenience. Immerse yourself in a t...</span><span class="desc-full" style="display:none">ruly peaceful countryside setting-quiet, private, and beautifully scenic, with 360 degree views! - while still being just 6 minutes from Tarago, 18 minutes from Bungendore, and under an hour from Canberra.
+The land features gently undulating terrain with a harmonious mix of open grazing country and light bushland. Two generous dams, a seasonal creek, and sweeping views across the landscape enhance both the practicality and the beauty of the property. Newly planted tree lines-including the driveway-add structure, shelter, and long-term aesthetic appeal to the home site and paddocks.
+A large shed (12x6m) provides excellent storage and infrastructure, with the early stages already completed for conversion into a self-contained cottage-perfect for guests, a studio, or future dual-living potential (STCA). The property has also been thoughtfully divided into multiple paddocks, supporting efficient stock management and maximising the usability of the acreage.
+With sealed road frontage, mature shade trees, and expansive paddocks ready for grazing, this is an exceptional canvas on which to build your dream home (STCA) and embrace a lifestyle of clean air, space, and serenity. Properties of this calibre and size are increasingly rare-whether you're seeking a rural retreat, hobby farm, or future family haven, this block is sure to impress.
+Don't miss the opportunity to inspect and secure a remarkable piece of countryside.
+* Comprising 97.5 acres freehold and 4.2 acres leasehold.
+DISCLAIMER. We have in preparing this document used our best endeavours to ensure the information contained is true and accurate but accept no responsibility and disclaim all liability in respect to any errors, omissions, inaccuracies, or misstatements contained. Prospective purchasers should make their ow</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">creek frontage</span> <span class="tag">dam</span> <span class="tag">views</span> <span class="tag">sealed road access</span> <span class="tag">existing house</span> <span class="tag">existing shed</span> <span class="tag">cleared pastoral</span></div>
+            
+            <a href="https://www.domain.com.au/2287-bungendore-road-tarago-nsw-2580-2020441371" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+    <div class="card" id="card-10" data-lat="-34.880203" data-lng="148.94876">
+        <div class="card-media">
+            <img src="https://rimh2.domainstatic.com.au/JMyYkjrA4RaLV2DzdNJTgUXQwhg=/660x440/filters:format(jpeg):quality(80)/2017877723_2_1_220912_122311-w1024-h767" alt="YASS" loading="lazy" class="card-img">
+            <div class="card-rank">#10</div>
+            <div class="card-score">80%</div>
+        </div>
+        <div class="card-body">
+            <div class="card-header">
+                <div>
+                    <div class="card-suburb">YASS</div>
+                    <div class="card-headline">" Stunning & peaceful retreat + multiple tiny homes with Air BnB incom</div>
+                </div>
+                <span class="badge badge-down">&#9660; 4 from #6</span>
+            </div>
+            
+            <div class="card-stats">
+                <div class="stat"><div class="stat-val">Contact Agent</div><div class="stat-label">Price</div></div>
+                <div class="stat"><div class="stat-val">38 ac</div><div class="stat-label">Land</div></div>
+                <div class="stat"><div class="stat-val">3h 26m</div><div class="stat-label">Drive</div></div>
+                <div class="stat"><div class="stat-val">5/3</div><div class="stat-label">Bed/Bath</div></div>
+            </div>
+            
+            <div class="score-bar"><div class="bar-seg" style="width:20.0%;background:#3b82f6;" title="Water: 20/25"></div><div class="bar-seg" style="width:16.0%;background:#8b5cf6;" title="Terrain: 16/20"></div><div class="bar-seg" style="width:15.0%;background:#059669;" title="Seclusion: 15/15"></div><div class="bar-seg" style="width:15.0%;background:#d97706;" title="House: 15/15"></div><div class="bar-seg" style="width:14.0%;background:#dc2626;" title="Drive: 14/20"></div><div class="bar-seg" style="width:0.0%;background:#6b7280;" title="Park: 0/5"></div></div>
+            <div class="legend"><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#3b82f6"></span>Water 20/25</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#8b5cf6"></span>Terrain 16/20</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#059669"></span>Seclusion 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#d97706"></span>House 15/15</span><span class="legend-item" style="opacity:1"><span class="legend-dot" style="background:#dc2626"></span>Drive 14/20</span><span class="legend-item" style="opacity:0.3"><span class="legend-dot" style="background:#6b7280"></span>Park 0/5</span></div>
+            
+            <div class="card-desc">
+                <span class="desc-short">Welcome to 37.82 acres of peaceful countryside, offering sweeping views, established infrastructure, and multiple accommodation options,-all less than 10 minutes from Yass and within easy commuting di...</span><span class="desc-full" style="display:none">stance to Canberra.
+This exceptional property is ideal for those seeking a tree-change lifestyle, multi-generational living, hobby farming, or income-producing opportunities.
+Whether you're dreaming of your forever home, running a small agribusiness, or enjoying the tranquility of rural life with town convenience, the possibilities here are endless.
+Step inside the spacious shed conversion, cleverly designed to provide 3 bedrooms, a functional kitchen, living area with split system to keep you comfortable all year round, and a modern bathroom. 
+Two self-contained tiny homes offer additional flexibility and are both popular Airbnb listings, generating strong and consistent rental income. Perfect for extended family, guests, or continued short-stay accommodation, they provide an immediate return for the new owner.
+For those envisioning a grand residence, multiple prime building sites are positioned to capture the sweeping rural vistas.
+The property is well-equipped with essential infrastructure: 3-phase underground power with four boards, solar power feeding back into the grid, a bore with a 10ML commercial license, two large dams, and dual 20,000L water tanks. 
+The land is fully fenced and divided into 2 paddocks, ready for stock, crops, or hobby farming. Already flourishing, the orchard features hundreds of fruit trees-including apples, figs, and plums-providing a possible income opportunity. Organic figs and vegetables are currently grown and irrigated from the bore.
+Here, lifestyle and opportunity come together: wide-open landscapes, peaceful days on the land, and stunning sunsets across rolling hills,-all just minutes from town.
+Features
+ 37.82 acres of peaceful countryside, less than 10 minutes from Yass township.
+ Spacious 12m x 18m shed conversion with 3 bedrooms,</span>
+                <button class="expand-btn" onclick="toggleDesc(this)">Read more</button>
+            </div>
+            
+            <div class="card-tags"><span class="tag">dam</span> <span class="tag">bore</span> <span class="tag">views</span> <span class="tag">existing house</span> <span class="tag">existing shed</span> <span class="tag">fruit trees</span></div>
+            
+            <a href="https://www.domain.com.au/218-dog-trap-road-yass-nsw-2582-2017877723" target="_blank" rel="noopener" class="card-link">View on Domain &#8599;</a>
+        </div>
+    </div>
+    
+
+    <div class="footer">
+        <div>163 properties scored across Domain, Elders, Southern Tablelands Realty & Farmbuy</div>
+        <div style="margin-top:4px;">Tap a property on the map to jump to its card. Tap "View on Domain" to see the full listing.</div>
+        <div style="margin-top:8px;">Prepared by Karl Howard &middot; Reforged</div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const markers = [{"lat": -33.320293, "lng": 150.112, "suburb": "LIDSDALE", "rank": 1, "price": "$990,000", "pct": 85}, {"lat": -34.969357, "lng": 149.92012, "suburb": "WINDELLAMA", "rank": 2, "price": "$1,190,000", "pct": 85}, {"lat": -35.015343, "lng": 149.84944, "suburb": "WINDELLAMA", "rank": 3, "price": "Deposit Taken", "pct": 85}, {"lat": -34.407658, "lng": 149.60205, "suburb": "CROOKWELL", "rank": 4, "price": "$950,000", "pct": 84}, {"lat": -35.12757, "lng": 149.94038, "suburb": "OALLEN", "rank": 5, "price": "$650,000", "pct": 83}, {"lat": -34.339405, "lng": 150.12868, "suburb": "BULLIO", "rank": 6, "price": "$1,475,000", "pct": 82}, {"lat": -34.51101, "lng": 150.02887, "suburb": "BIG HILL", "rank": 7, "price": "UNDER OFFER", "pct": 82}, {"lat": -34.617554, "lng": 150.08467, "suburb": "BRAYTON", "rank": 8, "price": "$1,650,000", "pct": 82}, {"lat": -35.12079, "lng": 149.5891, "suburb": "TARAGO", "rank": 9, "price": "$1,099,000", "pct": 82}, {"lat": -34.880203, "lng": 148.94876, "suburb": "YASS", "rank": 10, "price": "Contact Agent", "pct": 80}];
+
+const map = L.map('map', { zoomControl: true, scrollWheelZoom: false });
+L.tileLayer('https://{s}.basemaps.cartocdn.com/voyager/{z}/{x}/{y}@2x.png', {
+    attribution: '&copy; OSM &copy; CARTO',
+    maxZoom: 18,
+}).addTo(map);
+
+const bounds = [];
+markers.forEach(m => {
+    if (!m.lat || !m.lng) return;
+    bounds.push([m.lat, m.lng]);
+    
+    const icon = L.divIcon({
+        className: '',
+        html: `<div style="background:#1e293b;color:#fff;font-weight:700;font-size:12px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,0.3);">${m.rank}</div>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
+    });
+    
+    const marker = L.marker([m.lat, m.lng], { icon }).addTo(map);
+    marker.bindPopup(`<strong>#${m.rank} ${m.suburb}</strong><br>${m.price} — ${m.pct}%`);
+    marker.on('click', () => {
+        const card = document.getElementById(`card-${m.rank}`);
+        if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.add('highlight');
+            setTimeout(() => card.classList.remove('highlight'), 2000);
+        }
+    });
+});
+
+if (bounds.length) {
+    map.fitBounds(bounds, { padding: [30, 30] });
+}
+
+// Sydney marker
+L.circleMarker([-33.8688, 151.2653], {
+    radius: 6, color: '#dc2626', fillColor: '#dc2626', fillOpacity: 0.8, weight: 1
+}).addTo(map).bindPopup('Sydney (origin)');
+
+function toggleDesc(btn) {
+    const card = btn.closest('.card-desc');
+    const full = card.querySelector('.desc-full');
+    const short = card.querySelector('.desc-short');
+    if (full.style.display === 'none') {
+        full.style.display = 'inline';
+        short.textContent = short.textContent.replace('...', '');
+        btn.textContent = 'Show less';
+    } else {
+        full.style.display = 'none';
+        if (!short.textContent.endsWith('...')) short.textContent += '...';
+        btn.textContent = 'Read more';
+    }
+}
+</script>
+</body>
+</html>
